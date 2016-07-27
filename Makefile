@@ -3,7 +3,7 @@
 # @author Bernhard Posselt <dev@bernhard-posselt.com>
 # @copyright Bernhard Posselt 2012, 2014
 
-# Generic Makefile for building and packaging an ownCloud app which uses npm and
+# Generic Makefile for building and packaging an nextCloud app which uses npm and
 # Composer.
 #
 # Dependencies:

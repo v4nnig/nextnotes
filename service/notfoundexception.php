@@ -8,12 +8,6 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
+namespace OCA\NextNotes\Service;
 
-namespace OCA\NextNotes\AppInfo;
-
-use OCP\AppFramework\App;
-
-/**
- * Additional autoloader registration, e.g. registering composer autoloaders
- */
-// require_once __DIR__ . '/../vendor/autoload.php';
+class NotFoundException extends ServiceException {}

@@ -2,10 +2,10 @@
 <info>
     <id>nextnotes</id>
     <name>Next Notes</name>
-    <description>My first ownCloud app</description>
+    <description>Enhanced notes organization.</description>
     <licence>AGPL</licence>
     <author>Janis Koehr</author>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <namespace>NextNotes</namespace>
     <category>other</category>
     <dependencies>

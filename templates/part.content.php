@@ -1,10 +1,10 @@
-<p>Hello World <?php p($_['user']) ?></p>
-
-<p><button id="hello">click me</button></p>
-
-<p><textarea id="echo-content">
-	Send this as ajax
-</textarea></p>
-<p><button id="echo">Send ajax request</button></p>
-
-Ajax response: <div id="echo-result"></div>
+<script id="content-tpl" type="text/x-handlebars-template">
+	{{#if note}}
+	<div class="input"><textarea>{{ note.content }}</textarea></div>
+	<div class="save"><button><?php p($l->t('Save')); ?></button></div>
+	{{else}}
+	<div class="input"><textarea disabled></textarea></div>
+	<div class="save"><button disabled><?php p($l->t('Save')); ?></button></div>
+	{{/if}}
+</script>
+<div id="editor"></div>

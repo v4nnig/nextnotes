@@ -1,4 +1,5 @@
 <?php
+script('nextnotes', 'handlebars.min');
 script('nextnotes', 'script');
 style('nextnotes', 'style');
 ?>

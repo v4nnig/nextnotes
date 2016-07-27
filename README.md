@@ -1,4 +1,6 @@
 # Next Notes
+*This App is absolutely alpha for now.*
+
 Place this app in **owncloud/apps/**
 
 ## Building the app

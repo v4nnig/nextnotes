@@ -1,5 +1,5 @@
 <div id="nextnotes-editor">
 	<form>
-	<textarea id="nextnotes-textarea"></textarea>
+		<textarea id="nextnotes-textarea"></textarea>
 	</form>
 </div>

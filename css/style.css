@@ -1,27 +1,17 @@
 #app-content-wrapper {
 	height: 100%;
 }
-#nextnotes-editor h1 {
-	font-size: 200%;
-	line-height: 200%;
-	font-weight: bold;
-	border-bottom: 1px solid #eee;
+.CodeMirror {
+	height: 60%;
+	min-height: 150px;
 }
-#nextnotes-editor h2 {
-	font-size: 160%;
-	line-height: 160%;
-	font-weight: bold;
-	border-bottom: 1px solid #eee;
+.CodeMirror-scroll{
+	box-sizing: content-box!important;
+	min-height: 150px;
 }
-#nextnotes-editor h3 {
-	font-size: 125%;
-	line-height: 125%;
-	font-weight: bold;
-	border-bottom: 1px solid #eee;
+#nextnotes-editor {
+	height: 100%;
 }
-#nextnotes-editor h4 {
-	font-size: 110%;
-	line-height: 110%;
-	font-weight: bold;
-	border-bottom: 1px solid #eee;
+#nextnotes-editor form {
+	height: 100%;
 }

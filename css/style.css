@@ -1,34 +1,27 @@
 #app-content-wrapper {
 	height: 100%;
 }
-
-#editor {
-	height: 100%;
-	width: 100%;
+#nextnotes-editor h1 {
+	font-size: 200%;
+	line-height: 200%;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
 }
-
-#editor .input {
-	height: calc(100% - 51px);
-	width: 100%;
+#nextnotes-editor h2 {
+	font-size: 160%;
+	line-height: 160%;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
 }
-
-#editor .save {
-	height: 50px;
-	width: 100%;
-	text-align: center;
-	border-top: 1px solid #ccc;
-	background-color: #fafafa;
+#nextnotes-editor h3 {
+	font-size: 125%;
+	line-height: 125%;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
 }
-
-#editor textarea {
-	height: 100%;
-	width: 100%;
-	border: 0;
-	margin: 0;
-	border-radius: 0;
-	overflow-y: auto;
-}
-
-#editor button {
-	height: 44px;
+#nextnotes-editor h4 {
+	font-size: 110%;
+	line-height: 110%;
+	font-weight: bold;
+	border-bottom: 1px solid #eee;
 }

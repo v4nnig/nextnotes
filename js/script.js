@@ -10,8 +10,129 @@
 
 (function (OC, window, $, undefined) {
 	'use strict';
-
 	$(document).ready(function () {
+//this is the simplemde editor config
+		var simplemdeconfig = {
+			autofocus: true,
+			element: $('#nextnotes-textarea')[0],
+			forceSync: false,
+			placeholder: t('nextnotes','Type your note here...'),
+			spellChecker: false,
+			shortcuts: {
+				"toggleFullScreen": null,
+			},
+			toolbar: [
+				{
+					name: "new",
+					action: null,
+					className: "fa fa-file-text-o no-disable",
+					title: t("nextnotes", "New")
+				},
+				{
+					name: "safe",
+					action: null,
+					className: "fa fa-save no-disable",
+					title: t("nextnotes", "Safe")
+				},
+				{
+					name: "undo",
+					action: SimpleMDE.undo,
+					className: "fa fa-undo",
+					title: t("nextnotes", "Undo")
+				},
+				{
+					name: "redo",
+					action: SimpleMDE.redo,
+					className: "fa fa-repeat",
+					title: t("nextnotes", "Redo")
+				},
+				"|",
+				{
+					name: "bold",
+					action: SimpleMDE.toggleBold,
+					className: "fa fa-bold",
+					title: t("nextnotes", "Bold")
+				},
+				{
+					name: "italic",
+					action: SimpleMDE.toggleItalic,
+					className: "fa fa-italic",
+					title: t("nextnotes", "Italic")
+				},
+				{
+					name: "strikethrough",
+					action: SimpleMDE.toggleStrikethrough,
+					className: "fa fa-strikethrough",
+					title: t("nextnotes", "Strikethrough")
+				},
+				{
+					name: "heading",
+					action: SimpleMDE.toggleHeadingSmaller,
+					className: "fa fa-header",
+					title: t("nextnotes", "Heading")
+				},
+				"|",
+				{
+					name: "code",
+					action: SimpleMDE.toggleCodeBlock,
+					className: "fa fa-code",
+					title: t("nextnotes", "Code")
+				},
+				{
+					name: "quote",
+					action: SimpleMDE.toggleBlockquote,
+					className: "fa fa-quote-left",
+					title: t("nextnotes", "Quote")
+				},
+				{
+					name: "unordered-list",
+					action: SimpleMDE.toggleUnorderedList,
+					className: "fa fa-list-ul",
+					title: t("nextnotes", "Generic List")
+				},
+				{
+					name: "ordered-list",
+					action: SimpleMDE.toggleOrderedList,
+					className: "fa fa-list-ol",
+					title: t("nextnotes", "Numbered List")
+				},
+				"|",
+				{
+					name: "link",
+					action: SimpleMDE.drawLink,
+					className: "fa fa-link",
+					title: t("nextnotes", "Create Link")
+				},
+				{
+					name: "image",
+					action: SimpleMDE.drawImage,
+					className: "fa fa-picture-o",
+					title: t("nextnotes", "Insert Image")
+				},
+				{
+					name: "table",
+					action: SimpleMDE.drawTable,
+					className: "fa fa-table",
+					title: t("nextnotes", "Insert Table")
+				},
+				"|",
+				{
+					name: "preview",
+					action: SimpleMDE.togglePreview,
+					className: "fa fa-eye no-disable",
+					title: t("nextnotes", "Toggle Preview")
+				},
+				"|",
+				{
+					name: "guide",
+					action: function(){
+						window.open('https://simplemde.com/markdown-guide', '_blank');
+					},
+					className: "fa fa-question-circle",
+					title: t("nextnotes", "Markdown Guide")
+				}
+			]
+		};
 
 // this notes object holds all our notes
 		var Notes = function (baseUrl) {
@@ -31,6 +152,10 @@
 						note.active = false;
 					}
 				});
+			},
+			setActiveUndefined: function(){
+				var self = this;
+				self._activeNote = undefined;
 			},
 			getActive: function () {
 				return this._activeNote;
@@ -120,25 +245,11 @@
 
 		View.prototype = {
 			renderContent: function () {
-				var source = $('#content-tpl').html();
-				var template = Handlebars.compile(source);
-				var html = template({note: this._notes.getActive()});
-
-				$('#editor').html(html);
-
-				// handle saves
-				var textarea = $('#app-content textarea');
-				var self = this;
-				$('#app-content button').click(function () {
-					var content = textarea.val();
-					var title = content.split('\n')[0]; // first line is the title
-
-					self._notes.updateActive(title, content).done(function () {
-						self.render();
-					}).fail(function () {
-						alert(t('nextnotes','Could not update note, not found'));
-					});
-				});
+				if(this._notes.getActive() !== undefined){
+					simplemde.value(this._notes.getActive().content);
+				}else{
+					simplemde.value('');
+				}
 			},
 			renderNavigation: function () {
 				var source = $('#navigation-tpl').html();
@@ -147,22 +258,7 @@
 
 				$('#app-navigation ul').html(html);
 
-				// create a new note
 				var self = this;
-				$('#new-note').click(function () {
-					var note = {
-						title: t('nextnotes', 'New note'),
-						content: ''
-					};
-
-					self._notes.create(note).done(function() {
-						self.render();
-						$('#editor textarea').focus();
-					}).fail(function () {
-						alert(t('nextnotes','Could not create note'));
-					});
-				});
-
 				// show app menu
 				$('#app-navigation .app-navigation-entry-utils-menu-button').click(function () {
 					var entry = $(this).closest('.note');
@@ -186,7 +282,35 @@
 					var id = parseInt($(this).parent().data('id'), 10);
 					self._notes.load(id);
 					self.render();
-					$('#editor textarea').focus();
+				});
+
+				//New Note
+				$('#editor-toolbar > a:first-child').click(function () {
+					self._notes.setActiveUndefined();
+					self.render();
+				});
+
+				//Safe Note
+				$('#editor-toolbar > a:eq( 1 )').click(function () {
+					var content = simplemde.value();
+					var title = content.split('\n')[0]; // first line is the title
+					if(self._notes.getActive() !== undefined){
+						var note = {
+							title: title,
+							content: content
+						};
+						self._notes.create(note).done(function() {
+							self.render();
+						}).fail(function () {
+							alert(t('nextnotes','Could not create note'));
+						});
+					}else{
+						self._notes.updateActive(title, content).done(function () {
+							self.render();
+						}).fail(function () {
+							alert(t('nextnotes','Could not update note, not found'));
+						});
+					}
 				});
 			},
 			render: function () {
@@ -195,6 +319,7 @@
 			}
 		};
 
+		var simplemde = new SimpleMDE(simplemdeconfig);
 		var notes = new Notes(OC.generateUrl('/apps/nextnotes/notes'));
 		var view = new View(notes);
 		notes.loadAll().done(function () {
@@ -202,8 +327,6 @@
 		}).fail(function () {
 			alert(t('nextnotes','Could not load notes'));
 		});
-
-
 	});
 
 })(OC, window, jQuery);

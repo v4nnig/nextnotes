@@ -1,6 +1,9 @@
 <?php
 script('nextnotes', 'handlebars.min');
+script('nextnotes', 'simplemde');
 script('nextnotes', 'script');
+style('nextnotes', 'font-awesome.min');
+style('nextnotes', 'simplemde.min');
 style('nextnotes', 'style');
 ?>
 

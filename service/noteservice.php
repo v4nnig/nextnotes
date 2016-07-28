@@ -54,6 +54,10 @@ class NoteService {
     }
 
     public function create($title, $content, $userId) {
+        //TODO if($title) leer dann nicht anlegen dann ServiceException Leer!
+        if(strlen($title) == 0){
+            throw new NotFoundException("Could not create note. Empty title.");
+        }
         $note = new Note();
         $note->setTitle($title);
         $note->setContent($content);

@@ -3,6 +3,14 @@
     <create>true</create>
     <overwrite>false</overwrite>
     <charset>utf8</charset>
+    <!--
+    CREATE TABLE nextnotes_notes (
+    id INT(8) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    title TEXT,
+    user_id TEXT,
+    content CLOB,
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    -->
     <table>
         <name>*dbprefix*nextnotes_notes</name>
         <declaration>

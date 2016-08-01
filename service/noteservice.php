@@ -43,18 +43,13 @@ class NoteService {
     public function find($id, $userId) {
         try {
             return $this->mapper->find($id, $userId);
-
-            // in order to be able to plug in different storage backends like files
-            // for instance it is a good idea to turn storage related exceptions
-            // into service related exceptions so controllers and service users
-            // have to deal with only one type of exception
         } catch(Exception $e) {
             $this->handleException($e);
         }
     }
 
     public function create($title, $content, $userId) {
-        //TODO if($title) leer dann nicht anlegen dann ServiceException Leer!
+        // if($title) empty then do not create note
         if(strlen($title) == 0){
             throw new NotFoundException("Could not create note. Empty title.");
         }
@@ -67,6 +62,9 @@ class NoteService {
 
     public function update($id, $title, $content, $userId) {
         try {
+            if(strlen($title) == 0){
+                throw new NotFoundException('Could not update note. Empty title.');
+            }
             $note = $this->mapper->find($id, $userId);
             $note->setTitle($title);
             $note->setContent($content);

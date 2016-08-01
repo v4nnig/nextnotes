@@ -1,6 +1,7 @@
 <?php
-script('nextnotes', 'handlebars.min');
-script('nextnotes', 'simplemde');
+\OC_Util::addVendorScript('select2/select2');
+\OC_Util::addVendorStyle('select2/select2');
+script('nextnotes', 'simplemde.min');
 script('nextnotes', 'script');
 style('nextnotes', 'font-awesome.min');
 style('nextnotes', 'simplemde.min');

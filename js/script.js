@@ -11,13 +11,12 @@
 (function (OC, window, $, undefined) {
 	'use strict';
 	$(document).ready(function () {
-//this is the simplemde editor config
-		//var simplemdeconfig = ;
-
 // this notes object holds all our notes
 		var Notes = function (baseUrl) {
 			this._baseUrl = baseUrl;
+			this._tagURL = '/apps/nextnotes/tags';
 			this._notes = [];
+			this._tags = [];
 			this._activeNote = undefined;
 		};
 
@@ -166,17 +165,36 @@
 					}
 				});
 
-
-
 				//Safe Note
 				$('#editor-toolbar > a:eq( 1 )').click();
 			},
+
 			render: function () {
 				this.renderNavigation();
 				this.renderContent();
+				//this.renderInfoView();
 			}
 		};
 
+		var tag = {
+			id: 14,
+			title: 'aber jetzt'
+		};
+		var create = function (tag) {
+			var deferred = $.Deferred();
+			$.ajax({
+				url: '/apps/nextnotes/tags',
+				method: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(tag)
+			}).done(function () {
+				deferred.resolve();
+			}).fail(function () {
+				deferred.reject();
+			});
+			return deferred.promise();
+		};
+		var tags = new create(tag);
 		var notes = new Notes(OC.generateUrl('/apps/nextnotes/notes'));
 		var view = new View(notes);
 		var simplemde = new SimpleMDE({

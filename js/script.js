@@ -14,13 +14,14 @@
 // this notes object holds all our notes
 		var Notes = function (baseUrl) {
 			this._baseUrl = baseUrl;
-			this._tagURL = '/apps/nextnotes/tags';
+			this._tagURL = OC.generateUrl('/apps/nextnotes/tags');
 			this._notes = [];
 			this._tags = [];
 			this._activeNote = undefined;
 		};
 
 		Notes.prototype = {
+			/* NOTE specific functions. */
 			load: function (id) {
 				var self = this;
 				this._notes.forEach(function (note) {
@@ -113,6 +114,59 @@
 					contentType: 'application/json',
 					data: JSON.stringify(note)
 				});
+			},
+			/* TAG specific functions */
+			createTag: function (tag) {
+				var deferred = $.Deferred();
+				var self = this;
+				$.ajax({
+					url: self._tagURL,
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(tag)
+				}).done(function () {
+					deferred.resolve();
+				}).fail(function () {
+					deferred.reject();
+				});
+				return deferred.promise();
+			},
+			loadTags: function(id){
+				var deferred = $.Deferred();
+				var self = this;
+				$.get(self._tagURL+'/'+id).done(function (tags) {
+					self._tags = tags;
+					deferred.resolve();
+				}).fail(function () {
+					deferred.reject();
+				});
+				return deferred.promise();
+			},
+			unTag: function (id, title) {
+				var deferred = $.Deferred();
+				var self = this;
+				$.ajax({
+					url: self._tagURL+'/'+id+'/'+title,
+					method: 'DELETE'
+				}).done(function () {
+					deferred.resolve();
+				}).fail(function () {
+					deferred.reject();
+				});
+				return deferred.promise();
+			},
+			deleteTag: function (title) {
+				var deferred = $.Deferred();
+				var self = this;
+				$.ajax({
+					url: self._tagURL+'/'+title,
+					method: 'DELETE'
+				}).done(function () {
+					deferred.resolve();
+				}).fail(function () {
+					deferred.reject();
+				});
+				return deferred.promise();
 			}
 		};
 
@@ -176,28 +230,10 @@
 			}
 		};
 
-		var tag = {
-			id: 14,
-			title: 'aber jetzt'
-		};
-		var create = function (tag) {
-			var deferred = $.Deferred();
-			$.ajax({
-				url: '/apps/nextnotes/tags',
-				method: 'POST',
-				contentType: 'application/json',
-				data: JSON.stringify(tag)
-			}).done(function () {
-				deferred.resolve();
-			}).fail(function () {
-				deferred.reject();
-			});
-			return deferred.promise();
-		};
-		var tags = new create(tag);
 		var notes = new Notes(OC.generateUrl('/apps/nextnotes/notes'));
 		var view = new View(notes);
 		var simplemde = new SimpleMDE({
+			autoDownloadFontAwesome: false,
 			autofocus: true,
 			element: $('#nextnotes-textarea')[0],
 			forceSync: false,

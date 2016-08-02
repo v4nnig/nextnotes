@@ -22,9 +22,11 @@ use OCA\NextNotes\Db\NoteMapper;
 class NoteService {
 
     private $mapper;
+    private $service;
 
-    public function __construct(NoteMapper $mapper){
+    public function __construct(NoteMapper $mapper, TagService $tagService){
         $this->mapper = $mapper;
+        $this->service = $tagService;
     }
 
     public function findAll($userId) {
@@ -76,6 +78,9 @@ class NoteService {
 
     public function delete($id, $userId) {
         try {
+            //first delete all tag relations
+            $this->service->purgeObject($id);
+            //now delete the note
             $note = $this->mapper->find($id, $userId);
             $this->mapper->delete($note);
             return $note;

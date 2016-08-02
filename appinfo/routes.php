@@ -12,12 +12,15 @@
 return [
 	'resources' => [
 		'note' => ['url' => '/notes'],
-		'note_api' => ['url' => '/api/0.1/notes'],
-		'tag' => ['url' => '/tags']
+		'note_api' => ['url' => '/api/0.1/notes']
 	],
 	'routes' => [
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'note_api#preflighted_cors', 'url' => '/api/0.1/{path}',
-			'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']]
+			'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
+		['name' => 'tag#create', 'url' => '/tags', 'verb' => 'POST'],
+		['name' => 'tag#show', 'url' => '/tags/{id}', 'verb' => 'GET'],
+		['name' => 'tag#remove', 'url' => '/tags/{id}/{title}', 'verb' => 'DELETE'],
+		['name' => 'tag#delete', 'url' => '/tags/{title}', 'verb' => 'DELETE']
 	]
 ];

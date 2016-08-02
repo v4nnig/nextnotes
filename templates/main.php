@@ -5,7 +5,7 @@ script('nextnotes', 'simplemde.min');
 script('nextnotes', 'script');
 style('nextnotes', 'font-awesome.min');
 style('nextnotes', 'simplemde.min');
-style('nextnotes', 'markdown');
+style('nextnotes', 'markdown.min');
 style('nextnotes', 'style');
 ?>
 

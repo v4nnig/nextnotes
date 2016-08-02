@@ -12,6 +12,8 @@ namespace OCA\NextNotes\Controller;
 
 use OCA\NextNotes\Service\TagService;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 
@@ -31,17 +33,62 @@ class TagController extends Controller {
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
         $this->service = $tagService;
-        $this->service->createTag(14,'Superb');
     }
 
     /**
+     * Get all possible tags for current user.
      * @NoAdminRequired
-     * @param string $id
+     * @return DataResponse
+     */
+    public function index(){
+        return $this->service->getTagList();
+    }
+
+    /**
+     * Get all tags for one note.
+     * @NoAdminRequired
+     * @param int $id
+     * @return DataResponse
+     */
+    public function show($id) {
+        return $this->handleNotFound(function () use ($id){
+           return $this->service->findAll($id);
+        });
+    }
+
+    /**
+     * Create and relate tag to note.
+     * @NoAdminRequired
+     * @param int $id
      * @param string $title
-     * @return \OCP\AppFramework\Http\DataResponse
+     * @return DataResponse
      */
     public function create($id, $title){
         return $this->service->createTag($id, $title);
+    }
+
+    /**
+     * Delete Tag (untag) for given note.
+     * @NoAdminRequired
+     * @param int $id
+     * @param string $title
+     * @return DataResponse
+     */
+    public function remove($id, $title){
+        return $this->handleNotFound(function () use ($id, $title){
+           return $this->service->unTag($id, $title);
+        });
+    }
+
+    /**
+     * Delete Tag completely from DB
+     * @param $title
+     * @return DataResponse
+     */
+    public function delete($title){
+        return $this->handleNotFound(function () use ($title){
+           return $this->service->delete($title);
+        });
     }
 
 }

@@ -5,6 +5,6 @@
 		></button>
 	</div>
 	<div id="app-settings-content">
-		Your settings in here
+		Maybe we can delete the tags from here: just select with delete submit
 	</div>
 </div>

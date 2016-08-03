@@ -18,8 +18,9 @@ return [
 		['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 		['name' => 'note_api#preflighted_cors', 'url' => '/api/0.1/{path}',
 			'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
-		['name' => 'tag#create', 'url' => '/tags', 'verb' => 'POST'],
-		['name' => 'tag#show', 'url' => '/tags/{id}', 'verb' => 'GET'],
+		['name' => 'tag#index', 'url' => '/tags', 'verb' => 'GET'],
+		['name' => 'tag#create', 'url' => '/tagging', 'verb' => 'POST'],
+		['name' => 'tag#show', 'url' => '/tags', 'verb' => 'POST'],
 		['name' => 'tag#remove', 'url' => '/tags/{id}/{title}', 'verb' => 'DELETE'],
 		['name' => 'tag#delete', 'url' => '/tags/{title}', 'verb' => 'DELETE']
 	]

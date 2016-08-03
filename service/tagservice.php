@@ -43,29 +43,46 @@ class TagService {
 
     /**
      * Find all tags related to the given note id.
-     * Returns an array of tags with note id as key.
-     * @param int $id
+     * Returns an array of tags with note id as key in following form:
+     * [
+     *   1 => array('First tag', 'Second tag'),
+     *   4 => array('Second tag'),
+     *   16 => array('Second tag', 'Third tag'),
+     * ]
+     * @param array $ids
      * @return JSONResponse
      * @throws NotFoundException
      */
-    public function findAll($id) {
+    public function findAll($ids) {
         try{
-            $tags = $this->tagM->getTagsForObjects(array($id));
+            if(!isset($ids) OR empty($ids)){throw new NotFoundException('WRONG ARGUMENTS');}
+            $tags = $this->tagM->getTagsForObjects($ids);
             if ($tags !== false) {
-                if (empty($tags)) {
-                    throw new NotFoundException('No tags found for '.$id);
+                if(!empty($tags)){
+                    return $tags;
                 }
-                return $tags[$id];
+                return array();
             }
-            throw new NotFoundException('No tags found for '.$id);
+            throw new NotFoundException('Anything went wrong');
         }catch(Exception $e){
             $this->handleException($e);
         }
     }
 
+    /**
+     * Gets all tags for a specific user in following form:
+     * array('First tag', 'Second tag', 'Third tag', ... , 'Last tag')
+     * @return array
+     * @throws NotFoundException
+     */
     public function getTagList(){
         try{
-            return $this->tagM->getTags();
+            $tags = $this->tagM->getTags();
+            $result = array();
+            foreach($tags as $tag){
+                array_push($result, $tag['name']);
+            }
+            return $result;
         } catch(Exception $e) {
             $this->handleException($e);
         }
@@ -73,6 +90,7 @@ class TagService {
 
     public function createTag($noteId, $title){
         try{
+            if(!isset($noteId) OR !isset($title) OR $title == 'undefined' OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
             if ($this->tagM->tagAs($noteId,$title)){
                 return new DataResponse(array());
             }else{
@@ -85,6 +103,7 @@ class TagService {
 
     public function unTag($noteId, $title){
         try{
+            if(!isset($noteId) OR !isset($title) OR $title == 'undefined' OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
             if($this->tagM->unTag($noteId, $title)){
                 return new DataResponse(array());
             }else{
@@ -97,6 +116,7 @@ class TagService {
 
     public function purgeObject($noteId){
         try{
+            if(!isset($noteId) OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
             if($this->tagM->purgeObjects(array($noteId))){
                 return new DataResponse(array());
             }else{
@@ -109,6 +129,7 @@ class TagService {
 
     public function delete($title){
         try{
+            if(!isset($title) OR $title == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
             if($this->tagM->delete(array($title))){
                 return new DataResponse(array());
             }else{

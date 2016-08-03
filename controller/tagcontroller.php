@@ -45,14 +45,14 @@ class TagController extends Controller {
     }
 
     /**
-     * Get all tags for one note.
-     * @NoAdminRequired
-     * @param int $id
-     * @return DataResponse
-     */
-    public function show($id) {
-        return $this->handleNotFound(function () use ($id){
-           return $this->service->findAll($id);
+    * Get all tags for one note.
+    * @NoAdminRequired
+    * @param array $ids
+    * @return DataResponse
+    */
+    public function show($ids) {
+        return $this->handleNotFound(function () use ($ids){
+           return $this->service->findAll($ids);
         });
     }
 

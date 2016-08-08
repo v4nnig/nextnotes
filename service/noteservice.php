@@ -17,6 +17,8 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 use OCA\NextNotes\Db\Note;
 use OCA\NextNotes\Db\NoteMapper;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\JSON;
 
 
 class NoteService {
@@ -85,6 +87,50 @@ class NoteService {
             $this->mapper->delete($note);
             return $note;
         } catch(Exception $e) {
+            $this->handleException($e);
+        }
+    }
+
+    public function search($query, $userId) {
+        try {
+            //remove all unwanted signs from the query
+            $query = filter_var($query, FILTER_SANITIZE_STRING);
+            $tagSearchResult = [];
+            $noteSearchResult = [];
+            $tagSearch = false;
+            // if not empty query else throw notfound
+
+            // gets all tags (string between '#' signs) into a array.
+            preg_match_all('/\#[\w\s\!\-\_\?\*\+\%\p{Sc}\xC0-\xD6\xD8-\xF6\xF8-\xFF]*\#/u', $query, $hashtags);
+
+            if(!empty($hashtags[0])){// tag search required
+                //remove the tag strings from the query term
+                $query = str_replace($hashtags[0],'',$query);
+                // array of normalized tags
+                $tags = str_replace('#','',$hashtags[0]);
+                //check if any empty string is in the tag array
+                $tags = array_filter($tags, function($value) {
+                    return $value !== '' AND $value !== ' ';
+                });
+                if(!empty($tags)){
+                    $tagSearch = true;
+                }
+            }
+            $terms   = preg_split('/\s+/', $query);
+            $terms = array_filter($terms, function($value) {
+                return $value !== '' AND $value !== ' ';
+            });
+            
+            if(!empty($terms) AND !$tagSearch){ // fulltext search no tags
+                return $this->mapper->fulltextSearchWithoutTagFilter($terms, $userId);
+            }elseif (empty($terms) AND $tagSearch){ // tag search no fulltext
+                return $this->mapper->tagSearch($tags, $userId);
+            }elseif (!empty($terms) AND $tagSearch) {// fulltext search with tags
+                return $this->mapper->fulltextSearchWithTagFilter($terms, $tags, $userId);
+            }else{
+                throw new NotFoundException('No Notes found.');
+            }
+        } catch (Exception $e) {
             $this->handleException($e);
         }
     }

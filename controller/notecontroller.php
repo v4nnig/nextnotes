@@ -89,4 +89,17 @@ class NoteController extends Controller {
         });
     }
 
+    /**
+     * @NoAdminRequired
+     *
+     * @param string $query
+     * @return JSONResponse
+     */
+    //TODO: handlenotfound in frontend
+    public function search($query){
+        return $this->handleNotFound(function () use ($query) {
+            return $this->service->search($query, $this->userId);
+        });
+    }
+
 }

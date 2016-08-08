@@ -21,7 +21,8 @@ return [
 		['name' => 'tag#index', 'url' => '/tags', 'verb' => 'GET'],
 		['name' => 'tag#create', 'url' => '/tagging', 'verb' => 'POST'],
 		['name' => 'tag#show', 'url' => '/tags', 'verb' => 'POST'],
-		['name' => 'tag#remove', 'url' => '/tags/{id}/{title}', 'verb' => 'DELETE'],
-		['name' => 'tag#delete', 'url' => '/tags/{title}', 'verb' => 'DELETE']
+		['name' => 'tag#remove', 'url' => '/untag', 'verb' => 'POST'],
+		['name' => 'tag#delete', 'url' => '/deletetag', 'verb' => 'POST'],
+		['name' => 'note#search', 'url' => '/notes/search', 'verb' => 'POST']
 	]
 ];

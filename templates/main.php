@@ -2,6 +2,8 @@
 \OC_Util::addVendorScript('select2/select2');
 \OC_Util::addVendorStyle('select2/select2');
 script('nextnotes', 'simplemde.min');
+script('nextnotes', 'clearsearch.min');
+script('nextnotes', 'handlebarsIfCond.min');
 script('nextnotes', 'script');
 style('nextnotes', 'font-awesome.min');
 style('nextnotes', 'simplemde.min');
@@ -11,6 +13,7 @@ style('nextnotes', 'style');
 
 <div id="app">
 	<div id="app-navigation">
+		<?php print_unescaped($this->inc('part.search')); ?>
 		<?php print_unescaped($this->inc('part.navigation')); ?>
 		<?php print_unescaped($this->inc('part.settings')); ?>
 	</div>

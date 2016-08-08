@@ -12,8 +12,8 @@
 	'use strict';
 	$(document).ready(function () {
 // this tags object holds all our tags
-		var Tags = function (baseUrl, notes){
-			this._baseUrl = baseUrl;
+		var Tags = function (notes){
+			this._baseUrl = OC.generateUrl('/apps/nextnotes/tags');
 			this._notes = notes;
 			this._availableTags = [];
 			this._relatedTags = [];
@@ -29,14 +29,9 @@
 					contentType: 'application/json',
 					data: JSON.stringify(create)
 				}).done(function () {
-					//update object
-					self._relatedTags[create.id].push(create.title);
-					//update available
-					var i = self._availableTags.indexOf(create.title);
-					if(i == -1){
-						self._availableTags.push(create.title);
-					}
-					deferred.resolve();
+					$.when(self.loadAll()).done(function(){
+						deferred.resolve();
+					});
 				}).fail(function () {
 					deferred.reject();
 				});
@@ -46,6 +41,11 @@
 				var deferred = $.Deferred();
 				var self = this;
 				var ids = {ids: []};
+				self._relatedTags = [];
+				if(!self._notes.getAll().length){
+					deferred.resolve();
+					return deferred.promise();
+				}
 				$.each(self._notes.getAll(), function(index, value){
 					ids.ids.push(value.id);
 				});
@@ -65,9 +65,12 @@
 			unTag: function (id, title) {
 				var deferred = $.Deferred();
 				var self = this;
+				var untag = {id: id, title: title};
 				$.ajax({
-					url: self._baseUrl+'/'+id+'/'+title,
-					method: 'DELETE'
+					url: OC.generateUrl('/apps/nextnotes/untag'),
+					contentType: 'application/json',
+					method: 'POST',
+					data: JSON.stringify(untag)
 				}).done(function () {
 					//update object
 					var i = self._relatedTags[id].indexOf(title);
@@ -83,24 +86,16 @@
 			deleteTag: function (title) {
 				var deferred = $.Deferred();
 				var self = this;
+				var deletetag = {title: title};
 				$.ajax({
-					url: self._baseUrl+'/'+title,
-					method: 'DELETE'
+					url: OC.generateUrl('/apps/nextnotes/deletetag'),
+					contentType: 'application/json',
+					method: 'POST',
+					data: JSON.stringify(deletetag)
 				}).done(function () {
-					//update objects
-					$.each(self._relatedTags, function(index, value){
-						var i = self._relatedTags[index].indexOf(title);
-						if(i != -1) {
-							self._relatedTags[index].splice(i, 1);
-						}
+					$.when(self.loadAll()).done(function(){
+						deferred.resolve();
 					});
-					//update available
-					var i = self._availableTags[id].indexOf(title);
-					if(i != -1) {
-						self._availableTags[id].splice(i, 1);
-					}
-
-					deferred.resolve();
 				}).fail(function () {
 					deferred.reject();
 				});
@@ -118,10 +113,16 @@
 				return deferred.promise();
 			},
 			getAvailableTags: function(){
-				return this._availableTags;
+				var self = this;
+				return self._availableTags;
 			},
 			getRelatedTags: function(id){
-				return this._relatedTags[id];
+				var self = this;
+				return self._relatedTags[id];
+			},
+			getAllRelatedTags: function(){
+				var self = this;
+				return self._relatedTags;
 			},
 			loadAll: function(){
 				var deferred = $.Deferred();
@@ -158,7 +159,8 @@
 				this._activeNote = undefined;
 			},
 			getActive: function () {
-				return this._activeNote;
+				var self = this;
+				return self._activeNote;
 			},
 			removeActive: function () {
 				var index;
@@ -207,14 +209,36 @@
 				return deferred.promise();
 			},
 			getAll: function () {
-				return this._notes;
+				var self = this;
+				return self._notes;
 			},
 			loadAll: function () {
 				var deferred = $.Deferred();
 				var self = this;
 				$.get(this._baseUrl).done(function (notes) {
-					self._activeNote = undefined;
 					self._notes = notes;
+					if(self.getActive() !== undefined){
+						self.load(self.getActive().id);
+					}
+					deferred.resolve();
+				}).fail(function () {
+					deferred.reject();
+				});
+				return deferred.promise();
+			},
+			search: function(data){
+				var deferred = $.Deferred();
+				var self = this;
+				$.ajax({
+					url: this._baseUrl+'/search',
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(data)
+				}).done(function (notes) {
+					self._notes = notes;
+					if(self.getActive() !== undefined){
+						self.load(self.getActive().id);
+					}
 					deferred.resolve();
 				}).fail(function () {
 					deferred.reject();
@@ -225,7 +249,6 @@
 				var note = this.getActive();
 				note.title = title;
 				note.content = content;
-
 				return $.ajax({
 					url: this._baseUrl + '/' + note.id,
 					method: 'PUT',
@@ -254,7 +277,18 @@
 				var self = this;
 				var source = $('#navigation-tpl').html();
 				var template = Handlebars.compile(source);
-				var html = template({notes: self._notes.getAll()});
+				var view = [];
+				var viewnotes = self._notes.getAll();
+				var viewtags = self._tags.getAllRelatedTags();
+				$.each(viewnotes, function(index,element){
+					view.push({id: element.id, title: element.title, content: element.content, active: element.active});
+					$.each(viewtags, function(i, e){
+						if(element.id == i){
+							view[index].tags = e;
+						}
+					});
+				});
+				var html = template({notes: view});
 
 				$('#app-navigation ul').html(html);
 
@@ -276,6 +310,34 @@
 					});
 				});
 
+				var formSearchbox = $('form.nextnotes-searchbox');
+				var searchbox = $('#nextnotes-searchbox');
+
+				//destroy all registered events for the searchbox
+				formSearchbox.off('submit.nextnotes');
+				searchbox.off('keyup.nextnotes');
+
+				// search for notes
+				formSearchbox.on('submit.nextnotes', function(event) {
+					event.stopPropagation();
+					event.preventDefault();
+				});
+				searchbox.on('keyup.nextnotes', function(event) {
+					//enter
+					if (event.keyCode === 13) {
+						self.searchHelper();
+					}
+				});
+
+				//Register the "x" for the search field
+				if($('.clearInput').length){
+					$('.clearicon').unwrap();
+					$('.clearInput').remove();
+				}
+				$('.clearicon').clearIcon({"callback":function(){
+					self.searchHelper();
+				}});
+
 				// load a note
 				$('#app-navigation .note > a').click(function () {
 					var id = parseInt($(this).parent().data('id'), 10);
@@ -283,6 +345,12 @@
 					if(simplemde.isPreviewActive()){
 						simplemde.togglePreview();
 					}
+				});
+
+				//Register search action for on click tag event
+				$('.nextnotes-navigation-tag').on('click', function(){
+					searchbox.val('#'+$(this).text()+'#');
+					self.searchHelper();
 				});
 			},
 			renderInfoView: function(){
@@ -311,7 +379,7 @@
 						closeOnSelect: false,
 						allowClear: false,
 						// FORMATTING (possible messages)
-						formatNoMatches: function(term){
+						formatNoMatches: function(){
 							return t('nextnotes', 'No matches.');
 						},
 						formatSearching: t('nextnotes', 'Searching...')
@@ -320,41 +388,91 @@
 					select2Element.val(self._tags.getRelatedTags(self._notes.getActive().id)).trigger("change");
 					// UNTAG EVENT
 					select2Element.on("select2-removing", function(e){
-						self._tags.unTag(self._notes.getActive().id,e.choice.id).done(function(){
-							return true;
+						self._tags.unTag(self._notes.getActive().id, e.choice.id).done(function(){
+							self.render();
 						}).fail(function(){
 							event.preventDefault();
-							return false;
+							alert(t('nextnotes', 'Could not untag.'));
 						});
 					});
 					// CREATE TAG EVENT
 					select2Element.on("change", function(e) {
 						if (e.added !== undefined){
 							var create = {id: self._notes.getActive().id, title: e.added.text};
-							self._tags.createTag(create).done(function(){
-								return true;
+							$.when(self._tags.createTag(create)).done(function(){
+								self.render();
 							}).fail(function(){
 								alert(t('nextnotes', 'Could not create tag.'));
 							});
 						}
 					});
-					//TODO: maybe in "einstellungen" -> Completely delete a tag.
-					//Dynamic BackgroundColor for Tags
-					var themeBackgroundColor = $('#header').css('background-color');
-					//TODO: maybe there will be a optimization of theming nextcloud.. so there could be the possibility to get these values from the framework
-					var themeColor = $('.header-appname').css('color');
-					var style = $('<style>.select2-container-multi .select2-choices .select2-search-choice { background-color: '+themeBackgroundColor+'; color: '+themeColor+'; }</style>');
-					$('html > head').append(style);
+					//Register search action for on click tag event
+					$('.select2-search-choice>div').on('click', function(){
+						$('#nextnotes-searchbox').val('#'+$(this).text()+'#');
+						self.searchHelper();
+					});
 				}
 			},
+			adoptTheming: function(){
+				//Dynamic BackgroundColor for Tags
+				var themeBackgroundColor = $('#header').css('background-color');
+				//TODO: maybe there will be a optimization of theming nextcloud.. so there could be the possibility to get these values from the framework
+				var themeColor = $('.header-appname').css('color');
+				var style = $('<style>.select2-container-multi .select2-choices .select2-search-choice { background-color: '+themeBackgroundColor+'; color: '+themeColor+'; } .nextnotes-navigation-tag { background-color: '+themeBackgroundColor+'; color: '+themeColor+'; }</style>');
+				$('html > head').append(style);
+			},
+			searchHelper: function(){
+				var self = this;
+				var searchbox = $('#nextnotes-searchbox');
+				if(!searchbox.val()){
+					$.when(self._notes.loadAll()).done(function(){
+						self.renderNavigation();
+					}).fail(function(){
+						alert(t('nextnotes','Could not load notes.'));
+					});
+				}else {
+					var search = {
+						query: searchbox.val(),
+					};
+					$.when(self._notes.search(search)).done(function () {
+						$.when(self._tags.loadAll()).done(function(){
+							self.renderNavigation();
+						});
+					}).fail(function () {
+						alert(t('nextnotes', 'Could not search for notes.'));
+					});
+				}
+			},
+			renderTagManager: function(){
+				var self = this;
+				var source = $('#settings-tpl').html();
+				var template = Handlebars.compile(source);
+				var html = template({tags: self._tags.getAvailableTags()});
+				$('#app-settings-content').html(html);
+				$('.nextnotes-delete-tag').on('change', function(){
+					var name = $(this).find(':selected').val();
+					OC.dialogs.confirm(t('nextnotes', 'Are you really sure you want to delete the tag "{tag}"?',
+						{tag: name}),
+						t('nextnotes', 'Delete tag'), function(answer) {
+							if(answer) {
+								$.when(self._tags.deleteTag(name)).done(function(){
+									self.render();
+								});
+							}
+						});
+				});
+			},
 			render: function () {
-				this.renderNavigation();
 				this.renderContent();
+				this.renderNavigation();
 				this.renderInfoView();
+				this.adoptTheming();
+				this.renderTagManager();
 			}
 		};
+		
 		var notes = new Notes(OC.generateUrl('/apps/nextnotes/notes'));
-		var tags = new Tags(OC.generateUrl('/apps/nextnotes/tags'), notes);
+		var tags = new Tags(notes);
 		var view = new View(notes, tags);
 		var simplemde = new SimpleMDE({
 			autoDownloadFontAwesome: false,
@@ -364,7 +482,7 @@
 			placeholder: t('nextnotes','Type your note here...'),
 			spellChecker: false,
 			shortcuts: {
-				"toggleFullScreen": null,
+				"toggleFullScreen": null
 			},
 			toolbar: [
 				{
@@ -392,7 +510,7 @@
 								alert(t('nextnotes','Could not create note'));
 							});
 						}else{
-							view._notes.updateActive(title, content).done(function () {
+							$.when(view._notes.updateActive(title, content)).done(function () {
 								view.render();
 							}).fail(function () {
 								alert(t('nextnotes','Could not update note, not found'));

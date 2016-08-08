@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <database>
     <name>*dbname*</name>
     <create>true</create>
@@ -43,6 +44,13 @@
                 <default></default>
                 <notnull>true</notnull>
             </field>
+            <index>
+                <name>nextnotes_notes_user_id_index</name>
+                <field>
+                    <name>user_id</name>
+                    <sorting>ascending</sorting>
+                </field>
+            </index>
         </declaration>
     </table>
 </database>

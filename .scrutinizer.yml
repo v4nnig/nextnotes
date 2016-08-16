@@ -3,6 +3,8 @@ filter:
         - 'js/jquery*'
         - 'l10n/*'
         - 'tests/*'
+        - 'js/simplemde*'
+        - 'js/clearsearch*'
 
 imports:
     - javascript

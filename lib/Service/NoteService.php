@@ -213,4 +213,17 @@ class NoteService {
         }
     }
 
+	/**
+     * For Hook post_deleteUser: deletes all notes of a specific user.
+     * @param $userId
+     * @throws NotFoundException
+     */
+    public function post_deleteUser($userId){
+        try{
+            $this->mapper->deleteAllForUser($userId);
+        }catch (Exception $e){
+            $this->handleException($e);
+        }
+    }
+
 }

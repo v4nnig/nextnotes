@@ -124,4 +124,14 @@ class NoteMapper extends Mapper {
         return $this->findEntities($sql, [$userId, 'nextnotes', 'nextnotes', $userId]);
     }
 
+	/**
+     * For Hook post_deleteUser: deletes all notes of a specific user.
+     * @param $userId
+     * @return \PDOStatement
+     */
+    public function deleteAllForUser($userId){
+        $sql = 'DELETE FROM *PREFIX*nextnotes_notes WHERE user_id = ?';
+        return $this->execute($sql, [$userId]);
+    }
+
 }

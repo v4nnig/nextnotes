@@ -12,12 +12,12 @@
     <author>Janis Koehr</author>
     <namespace>NextNotes</namespace>
     <documentation>
-        <user>http://janis91.github.io/nextnotes/</user>
+        <user>https://janis91.github.io/nextnotes/</user>
         <admin>https://github.com/janis91/nextnotes/wiki</admin>
         <developer>https://github.com/janis91/nextnotes/wiki</developer>
     </documentation>
     <category>organization</category>
-    <website>http://janis91.github.io/nextnotes/</website>
+    <website>https://janis91.github.io/nextnotes/</website>
     <bugs>https://github.com/janis91/nextnotes/issues</bugs>
     <repository type="git">https://github.com/janis91/nextnotes.git</repository>
     <screenshot>https://raw.githubusercontent.com/janis91/nextnotes/master/screenshots/sc1.png</screenshot>

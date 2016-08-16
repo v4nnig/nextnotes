@@ -1,54 +1,29 @@
-# Next Notes
-*This App is absolutely alpha for now.*
+# Next Notes (v1.0.0)
+[![Build Status](https://travis-ci.org/janis91/nextnotes.svg?branch=master)](https://travis-ci.org/janis91/nextnotes)
 
-Place this app in **owncloud/apps/**
+A new Nextcloud app for enhanced organization of notes.
+The Next Notes app gives you much more possibilities for your personal organization. With Next Notes you will be able to create notes with a simple markup for enhanced usability, search for your notes by tags or in fulltext. And a future version will give you the opportunity to share your notes with others or let them even edit them completely without the constraint of being logged in.
 
-## Building the app
+See [Website](http://janis91.github.io/nextnotes/) for screenshots and more about the usage and examples or use cases.
+Try it!
 
-The app can be built by using the provided Makefile by running:
+## Installation
+Install the app from the [Nextcloud AppStore](http://apps.nextcloud.com) or download/clone the git [release](https://github.com/janis91/nextnotes/releases) and place the content in **owncloud/apps/** or **nextcloud/apps/**.
 
-    make
+## Contribute
+If you recognize any bugs or if you want to propose new features or enhancements, please open an issue here on github or submit your pull-request. Everyone is welcome to contribute.
 
-This requires the following things to be present:
-* make
-* which
-* tar: for building the archive
-* curl: used if phpunit and composer are not installed to fetch them from the web
-* npm: for building and testing everything JS, only required if a package.json is placed inside the **js/** folder
+## Prerequisites, Requirements and Dependencies
+* **[Nextcloud 9](https://nextcloud.com/)**
+* A fork of **[SimpleMDE](https://github.com/NextStepWebs/simplemde-markdown-editor)** is used for the beautiful md editor surface.
+* A fork of **[Markdown CSS](https://github.com/sindresorhus/github-markdown-css)** is used for the styling.
 
-The make command will install or update Composer dependencies if a composer.json is present and also **npm run build** if a package.json is present in the **js/** folder. The npm **build** script should use local paths for build systems and package managers, so people that simply want to build the app won't need to install npm libraries globally, e.g.:
+##Legal Information
+###Disclaimer
+The software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-**package.json**:
-```json
-"scripts": {
-    "test": "node node_modules/gulp-cli/bin/gulp.js karma",
-    "prebuild": "npm install && node_modules/bower/bin/bower install && node_modules/bower/bin/bower update",
-    "build": "node node_modules/gulp-cli/bin/gulp.js"
-}
-```
+###Author
+Janis Koehr
 
-
-## Publish to App Store
-
-First get an account for the [App Store](http://apps.owncloud.com/) then run:
-
-    make appstore
-
-The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
-
-## Running tests
-You can use the provided Makefile to run all tests by using:
-
-    make test
-
-This will run the PHP unit and integration tests and if a package.json is present in the **js/** folder will execute **npm run test**
-
-Of course you can also install [PHPUnit](http://phpunit.de/getting-started.html) and use the configurations directly:
-
-    phpunit -c phpunit.xml
-
-or:
-
-    phpunit -c phpunit.integration.xml
-
-for integration tests
+###License
+[GNU AFFERO GENERAL PUBLIC LICENSE](https://github.com/janis91/nextnotes/blob/master/COPYING)

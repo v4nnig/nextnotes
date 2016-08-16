@@ -15,12 +15,28 @@ use JsonSerializable;
 
 use OCP\AppFramework\Db\Entity;
 
+/**
+ * Class Note
+ * @package OCA\NextNotes\Db
+ */
 class Note extends Entity implements JsonSerializable{
 
+    /**
+     * @var string
+     */
     protected $title;
+    /**
+     * @var string
+     */
     protected $content;
+    /**
+     * @var string
+     */
     protected $userId;
 
+    /**
+     * @return JsonSerializable entities
+     */
     public function jsonSerialize() {
         return [
             'id' => $this->id,

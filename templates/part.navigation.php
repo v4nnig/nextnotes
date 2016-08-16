@@ -1,4 +1,7 @@
 <script id="navigation-tpl" type="text/x-handlebars-template">
+    {{#if noMatches}}
+    <li><p><?php p($l->t('No notes found...')); ?></p></li>
+    {{else}}
 	{{#each notes}}
 	<li class="note with-menu {{#if active}}active{{/if}}"  data-id="{{ id }}">
 		
@@ -23,6 +26,7 @@
 		</div>
 	</li>
 	{{/each}}
+    {{/if}}
 </script>
 
 <ul></ul>

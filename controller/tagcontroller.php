@@ -13,7 +13,6 @@ namespace OCA\NextNotes\Controller;
 use OCA\NextNotes\Service\TagService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\IRequest;
 use OCP\AppFramework\Controller;
 
@@ -24,11 +23,24 @@ use OCP\AppFramework\Controller;
  */
 class TagController extends Controller {
 
+    /**
+     * @var TagService
+     */
     private $service;
+    /**
+     * @var string
+     */
     private $userId;
 
     use Errors;
 
+    /**
+     * TagController constructor.
+     * @param string $AppName
+     * @param IRequest $request
+     * @param TagService $tagService
+     * @param $UserId
+     */
     public function __construct($AppName, IRequest $request, TagService $tagService, $UserId){
         parent::__construct($AppName, $request);
         $this->userId = $UserId;

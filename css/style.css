@@ -16,13 +16,10 @@
 	min-width: 10px;
 	padding: 3px 7px;
 	font-size: 12px;
-	font-weight: bold;
-	color: #ffffff;
 	line-height: 1;
 	vertical-align: middle;
 	white-space: nowrap;
 	text-align: center;
-	background-color: rgb(35, 111, 187);
 	border-radius: 10px;
 	opacity: 0.7;       /* modern browser */
 	-moz-opacity: 0.7;  /* older Mozilla browser */
@@ -39,11 +36,23 @@
 	display: none;
 }
 .nextnotes-navigation-tag:hover {
-	/* TODO: if theming is fully build-in than this does not work anymore */
-	color: #000;
+	text-decoration: underline;
+	font-weight: bold;
 }
 #app-navigation .app-navigation-entry-menu li{
 	min-height:0;
+}
+#app-navigation li > p{
+	display: block;
+	width: 100%;
+	line-height: 44px;
+	min-height: 44px;
+	padding: 0 12px;
+	overflow: hidden;
+	box-sizing: border-box;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: #000;
 }
 
 /***********/
@@ -144,8 +153,6 @@
 .nextnotes-select2-container .select2-choices {
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	background: #fff;
-	color: #555;
 	box-sizing: content-box;
 	border-radius: 3px;
 	border: 1px solid #ddd;
@@ -178,15 +185,14 @@
 	display: none;
 }
 .select2-container-multi .select2-choices .select2-search-choice {
-	background-color: rgb(35, 111, 187);
 	border-color: transparent;
 	box-shadow: none;
 	background-image: none;
 }
 .select2-container-multi .select2-choices .select2-search-choice:hover,
 .select2-container-multi.select2-container-active .select2-choices .select2-search-choice-focus{
-	/* TODO: if theming is fully build-in than this does not work anymore */
-	color: #000;
+	text-decoration: underline;
+	font-weight: bold;
 }
 .select2-results .select2-highlighted {
 	background-color: rgba(240,240,240,.9);

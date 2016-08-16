@@ -10,62 +10,108 @@
  */
 namespace OCA\NextNotes\Controller;
 
-use OCP\AppFramework\Http\JSONResponse;
+use OCA\NextNotes\Service\TagService;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
-use OCP\AppFramework\Controller;
-use OCP\ITagManager;
 
 
-class TagApiController extends Controller {
 
+/**
+ * Class TagController
+ * @package OCA\NextNotes\Controller
+ */
+class TagApiController extends ApiController {
+
+    /**
+     * @var TagService
+     */
+    private $service;
+    /**
+     * @var string
+     */
     private $userId;
-    private $tagmanager;
 
     use Errors;
 
-    public function __construct($AppName, IRequest $request, ITagManager $tagManager, $UserId){
+    /**
+     * TagApiController constructor.
+     * @param string $AppName
+     * @param IRequest $request
+     * @param TagService $tagService
+     * @param string $UserId
+     */
+    public function __construct($AppName, IRequest $request, TagService $tagService, $UserId){
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
-        $this->tagmanager = $tagManager->load('nextnotes',array(),true,$this->userId);
+        $this->service = $tagService;
     }
 
     /**
+     * Get all possible tags for current user.
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
-     * @param int $noteId
-     * @return JSONResponse
+     * @return DataResponse
      */
-    public function getTagsForNote($noteId) {
-        $noteIds = array($noteId);
-        $tags = $this->tagmanager->getTagsForObjects($noteIds);
-        return new JSONResponse($tags);
+    public function index(){
+        return $this->service->getTagList();
     }
 
     /**
+     * Get all tags for one note.
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
+     * @param array $ids
+     * @return DataResponse
+     */
+    public function show($ids) {
+        return $this->handleNotFound(function () use ($ids){
+            return $this->service->findAll($ids);
+        });
+    }
+
+    /**
+     * Create and relate tag to note.
+     * @CORS
+     * @NoCSRFRequired
+     * @NoAdminRequired
+     * @param int $id
      * @param string $title
-     * @param int $noteId
-     * @return JSONResponse
+     * @return DataResponse
      */
-    public function createTagForNote($title, $noteId) {
-        $tag = $this->createTag($title);
-        $result = $this->tagmanager->tagAs($noteId, $title);
-        return new JSONResponse($result);
+    public function create($id, $title){
+        return $this->service->createTag($id, $title);
     }
 
     /**
+     * Delete Tag (untag) for given note.
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
+     * @param int $id
      * @param string $title
-     * @return JSONResponse
+     * @return DataResponse
      */
-    public function createTag($title) {
-        $result = $this->tagmanager->add($title);
-        return new JSONResponse($result);
+    public function remove($id, $title){
+        return $this->handleNotFound(function () use ($id, $title){
+            return $this->service->unTag($id, $title);
+        });
+    }
+
+    /**
+     * Delete Tag completely from DB
+     * @CORS
+     * @NoCSRFRequired
+     * @param $title
+     * @return DataResponse
+     */
+    public function delete($title){
+        return $this->handleNotFound(function () use ($title){
+            return $this->service->delete($title);
+        });
     }
 
 }

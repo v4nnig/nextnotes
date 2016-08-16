@@ -10,4 +10,8 @@
  */
 namespace OCA\NextNotes\Service;
 
+/**
+ * Class NotFoundException
+ * @package OCA\NextNotes\Service
+ */
 class NotFoundException extends ServiceException {}

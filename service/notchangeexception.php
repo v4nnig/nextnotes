@@ -10,4 +10,8 @@
  */
 namespace OCA\NextNotes\Service;
 
+/**
+ * Class NotChangeException
+ * @package OCA\NextNotes\Service
+ */
 class NotChangeException extends ServiceException {}

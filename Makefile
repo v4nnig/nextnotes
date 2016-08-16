@@ -120,9 +120,12 @@ source:
 	tar cvzf $(source_package_name).tar.gz ../$(app_name) \
 	--exclude-vcs \
 	--exclude="../$(app_name)/build" \
+	--exclude="../$(app_name)/node_modules" \
+	--exclude="../$(app_name)/.github" \
 	--exclude="../$(app_name)/js/node_modules" \
 	--exclude="../$(app_name)/*.log" \
 	--exclude="../$(app_name)/js/*.log" \
+	--exclude="../$(app_name)/screenshots" \
 
 # Builds the source package for the app store, ignores php and js tests
 .PHONY: appstore
@@ -140,6 +143,7 @@ appstore:
 	--exclude="../$(app_name)/phpunit*xml" \
 	--exclude="../$(app_name)/composer.*" \
 	--exclude="../$(app_name)/js/node_modules" \
+	--exclude="../$(app_name)/node_modules" \
 	--exclude="../$(app_name)/js/tests" \
 	--exclude="../$(app_name)/js/test" \
 	--exclude="../$(app_name)/js/*.log" \
@@ -153,6 +157,8 @@ appstore:
 	--exclude="../$(app_name)/protractor\.*" \
 	--exclude="../$(app_name)/.*" \
 	--exclude="../$(app_name)/js/.*" \
+	--exclude="../$(app_name)/.github" \
+	--exclude="../$(app_name)/screenshots" \
 
 # Command for running JS and PHP tests. Works for package.json files in the js/
 # and root directory. If phpunit is not installed systemwide, a copy is fetched

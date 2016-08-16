@@ -10,10 +10,8 @@
  */
 namespace OCA\NextNotes\Service;
 
-use Exception;
-
 /**
- * Class ServiceException
+ * Class WrongCallException
  * @package OCA\NextNotes\Service
  */
-class ServiceException extends Exception {}
+class WrongCallException extends ServiceException {}

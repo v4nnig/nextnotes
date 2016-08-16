@@ -14,7 +14,6 @@ namespace OCA\NextNotes\Controller;
 use PHPUnit_Framework_TestCase;
 
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\DataResponse;
 
 use OCA\NextNotes\Service\NotFoundException;
 

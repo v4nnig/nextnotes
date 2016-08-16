@@ -20,6 +20,10 @@ use OCP\AppFramework\Http\JSONResponse;
 use OCP\ITagManager;
 
 
+/**
+ * Class TagService
+ * @package OCA\NextNotes\Service
+ */
 class TagService {
 
     /**
@@ -27,14 +31,25 @@ class TagService {
      */
     private $tagM;
 
+
+    /**
+     * TagService constructor.
+     * @param ITagManager $tagManager
+     */
     public function __construct(ITagManager $tagManager){
         $this->tagM = $tagManager->load('nextnotes');
     }
 
+    /**
+     * Handle the possible thrown Exceptions from all methods of this class.
+     * @param $e
+     * @throws NotFoundException
+     */
     private function handleException ($e) {
         if ($e instanceof DoesNotExistException ||
             $e instanceof MultipleObjectsReturnedException ||
-            $e instanceof NotChangeException) {
+            $e instanceof NotChangeException ||
+            $e instanceof WrongCallException) {
             throw new NotFoundException($e->getMessage());
         } else {
             throw $e;
@@ -55,7 +70,7 @@ class TagService {
      */
     public function findAll($ids) {
         try{
-            if(!isset($ids) OR empty($ids)){throw new NotFoundException('WRONG ARGUMENTS');}
+            if(!isset($ids) OR empty($ids)){throw new WrongCallException('WRONG ARGUMENTS');}
             $tags = $this->tagM->getTagsForObjects($ids);
             if ($tags !== false) {
                 if(!empty($tags)){
@@ -88,9 +103,16 @@ class TagService {
         }
     }
 
+    /**
+     * Create a tag for the given noteId and tagTitle.
+     * @param $noteId
+     * @param $title
+     * @return DataResponse
+     * @throws NotFoundException
+     */
     public function createTag($noteId, $title){
         try{
-            if(!isset($noteId) OR !isset($title) OR $title == 'undefined' OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
+            if(!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if ($this->tagM->tagAs($noteId,$title)){
                 return new DataResponse(array());
             }else{
@@ -101,9 +123,16 @@ class TagService {
         }
     }
 
+    /**
+     * Untag: delete the obejct relation between given noteId and given tagtitle.
+     * @param $noteId
+     * @param $title
+     * @return DataResponse
+     * @throws NotFoundException
+     */
     public function unTag($noteId, $title){
         try{
-            if(!isset($noteId) OR !isset($title) OR $title == 'undefined' OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
+            if(!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if($this->tagM->unTag($noteId, $title)){
                 return new DataResponse(array());
             }else{
@@ -114,9 +143,15 @@ class TagService {
         }
     }
 
+    /**
+     * If a note gets deleted, the object relation has to be removed.
+     * @param $noteId
+     * @return DataResponse
+     * @throws NotFoundException
+     */
     public function purgeObject($noteId){
         try{
-            if(!isset($noteId) OR $noteId == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
+            if(!isset($noteId) OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if($this->tagM->purgeObjects(array($noteId))){
                 return new DataResponse(array());
             }else{
@@ -127,10 +162,19 @@ class TagService {
         }
     }
 
-    public function delete($title){
+    /**
+     * Delete all object relations and the tag itself.
+     * @param $titles
+     * @return DataResponse
+     * @throws NotFoundException
+     */
+    public function delete($titles){
         try{
-            if(!isset($title) OR $title == 'undefined'){throw new NotFoundException('WRONG ARGUMENTS');}
-            if($this->tagM->delete(array($title))){
+            if(!isset($titles) OR $titles === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
+            if(!is_array($titles)) {
+                $titles = array($titles);
+            }
+            if($this->tagM->delete($titles)){
                 return new DataResponse(array());
             }else{
                 throw new NotFoundException('Could not delete.');

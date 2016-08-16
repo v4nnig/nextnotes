@@ -17,21 +17,39 @@ use OCP\AppFramework\ApiController;
 
 use OCA\NextNotes\Service\NoteService;
 
+/**
+ * Class NoteApiController
+ * @package OCA\NextNotes\Controller
+ */
 class NoteApiController extends ApiController {
 
+    /**
+     * @var NoteService
+     */
     private $service;
+    /**
+     * @var string
+     */
     private $userId;
 
     use Errors;
 
+    /**
+     * NoteApiController constructor.
+     * @param string $AppName
+     * @param IRequest $request
+     * @param NoteService $service
+     * @param string $userId
+     */
     public function __construct($AppName, IRequest $request,
-                                NoteService $service, $UserId){
+                                NoteService $service, $userId){
         parent::__construct($AppName, $request);
         $this->service = $service;
-        $this->userId = $UserId;
+        $this->userId = $userId;
     }
 
     /**
+     * Get all notes
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -41,6 +59,7 @@ class NoteApiController extends ApiController {
     }
 
     /**
+     * Get a specific note for a given id
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -55,6 +74,7 @@ class NoteApiController extends ApiController {
     }
 
     /**
+     * Create a note with the given title and content
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -68,6 +88,7 @@ class NoteApiController extends ApiController {
     }
 
     /**
+     * Update a note for the given id with title and content
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -84,6 +105,7 @@ class NoteApiController extends ApiController {
     }
 
     /**
+     * Delete a note for the given id.
      * @CORS
      * @NoCSRFRequired
      * @NoAdminRequired
@@ -94,6 +116,25 @@ class NoteApiController extends ApiController {
     public function destroy($id) {
         return $this->handleNotFound(function () use ($id) {
             return $this->service->delete($id, $this->userId);
+        });
+    }
+
+    /**
+     * Search for notes with given query.
+     * Query can contain different string parts,
+     * which are defined at the service method:
+     * OCA\NextNotes\NoteService::search()
+     *
+     * @CORS
+     * @NoCSRFRequired
+     * @NoAdminRequired
+     *
+     * @param string $query
+     * @return JSONResponse
+     */
+    public function search($query){
+        return $this->handleNotFound(function () use ($query) {
+            return $this->service->search($query, $this->userId);
         });
     }
 

@@ -18,8 +18,18 @@ use OCP\AppFramework\Http\DataResponse;
 use OCA\NextNotes\Service\NotFoundException;
 
 
+/**
+ * Class Errors
+ * @package OCA\NextNotes\Controller
+ */
 trait Errors {
 
+    /**
+     * handles the thrown Errors for all Controllers
+     * and sends a DataResponse with the ErrorMessage of the service
+     * @param Closure $callback
+     * @return DataResponse
+     */
     protected function handleNotFound (Closure $callback) {
         try {
             return new DataResponse($callback());

@@ -11,13 +11,18 @@
 
 namespace OCA\NextNotes\AppInfo;
 
+
 use OCP\AppFramework\App;
+use OCP\Util;
 
 require_once __DIR__ . '/autoload.php';
 
 $app = new App('nextnotes');
 $container = $app->getContainer();
 
+/**
+ * Create the Navigation in Nextcloud
+ */
 $container->query('OCP\INavigationManager')->add(function () use ($container) {
 	$urlGenerator = $container->query('OCP\IURLGenerator');
 	$l10n = $container->query('OCP\IL10N');
@@ -41,3 +46,9 @@ $container->query('OCP\INavigationManager')->add(function () use ($container) {
 		'name' => $l10n->t('Next Notes'),
 	];
 });
+
+/**
+ * FIXME: Register the Hooks for the User (NoteService)
+ * TODO: If Tag post delete User hook is registered in the core, this i not necessary anymore. OR own implementation of tags because of the share thing.
+ */
+Util::connectHook('OC_User', 'post_deleteUser', 'OC\Tags', 'post_deleteUser');

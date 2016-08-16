@@ -1,4 +1,3 @@
-<?php
 /**
  * nextCloud - nextnotes
  *
@@ -8,12 +7,4 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
-namespace OCA\NextNotes\Service;
 
-use Exception;
-
-/**
- * Class ServiceException
- * @package OCA\NextNotes\Service
- */
-class ServiceException extends Exception {}

@@ -1,4 +1,4 @@
-# Next Notes (v1.0.0)
+# Next Notes (v1.0.0) **DO NOT USE IT UNTIL THE APPSTORE OF NEXTCLOUD IS OUT OF BETA STATE**
 [![Build Status](https://travis-ci.org/janis91/nextnotes.svg?branch=master)](https://travis-ci.org/janis91/nextnotes)
 
 A new Nextcloud app for enhanced organization of notes.
@@ -14,7 +14,7 @@ Install the app from the [Nextcloud AppStore](http://apps.nextcloud.com) or down
 If you recognize any bugs or if you want to propose new features or enhancements, please open an issue here on github or submit your pull-request. Everyone is welcome to contribute.
 
 ## Prerequisites, Requirements and Dependencies
-* **[Nextcloud 9](https://nextcloud.com/)**
+* **[Nextcloud 10](https://nextcloud.com/)** or higher
 * A fork of **[SimpleMDE](https://github.com/NextStepWebs/simplemde-markdown-editor)** is used for the beautiful md editor surface.
 * A fork of **[Markdown CSS](https://github.com/sindresorhus/github-markdown-css)** is used for the styling.
 

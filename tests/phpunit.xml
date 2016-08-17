@@ -12,9 +12,8 @@
     <!-- filters for code coverage -->
     <filter>
         <whitelist>
-            <directory suffix=".php">../../nextnotes/appinfo</directory>
-            <directory suffix=".php">../../nextnotes/controller</directory>
-            <directory suffix=".php">../../nextnotes/service</directory>
+            <directory suffix=".php">../../nextnotes/lib/Controller</directory>
+            <directory suffix=".php">../../nextnotes/lib/Service</directory>
         </whitelist>
     </filter>
     <logging>

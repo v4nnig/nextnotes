@@ -17,7 +17,10 @@
 //clearsearch.js - self made: clearIcon 'X' in the searchfield
 \OCP\Util::addScript('nextnotes', 'clearsearch.min');
 //main app with all necessary classes and ajax call functions
-\OCP\Util::addScript('nextnotes', 'script');
+\OCP\Util::addScript('nextnotes', 'nextnotesapp');
+\OCP\Util::addScript('nextnotes', 'nextnotesnotes');
+\OCP\Util::addScript('nextnotes', 'nextnotestags');
+\OCP\Util::addScript('nextnotes', 'nextnotesview');
 //Font-Awesome for pretty icons in SimpleMDE
 \OCP\Util::addStyle('nextnotes', 'font-awesome.min');
 //SimpleMDE styling

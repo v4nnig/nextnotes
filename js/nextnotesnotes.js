@@ -187,5 +187,7 @@
 			});
 		}
 	};
-	OCA.NextNotes.Notes = Notes;
+	if (OCA.NextNotes) {
+		OCA.NextNotes.Notes = Notes;
+	}
 })();

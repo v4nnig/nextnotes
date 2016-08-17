@@ -193,5 +193,7 @@
 			return deferred.promise();
 		}
 	};
-	OCA.NextNotes.Tags = Tags;
+	if (OCA.NextNotes) {
+		OCA.NextNotes.Tags = Tags;
+	}
 })();

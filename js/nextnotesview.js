@@ -13,6 +13,7 @@
 	 * This will update the different parts of the html.
 	 * @param notes
 	 * @param tags
+	 * @param simplemde
 	 * @constructor
 	 */
 	var View = function (notes, tags, simplemde) {
@@ -114,8 +115,8 @@
 			$('#app-navigation .note > a').click(function () {
 				var id = parseInt($(this).parent().data('id'), 10);
 				$.when(self._notes.load(id)).done(self.render());
-				if(simplemde.isPreviewActive()){
-					simplemde.togglePreview();
+				if(self._simplemde.isPreviewActive()){
+					self._simplemde.togglePreview();
 				}
 			});
 			//Register search action for on click tag event
@@ -280,5 +281,7 @@
 			this.adoptTheming();
 		}
 	};
-	OCA.NextNotes.View = View;
+	if (OCA.NextNotes) {
+		OCA.NextNotes.View = View;
+	}
 })();

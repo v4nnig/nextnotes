@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="tests/bootstrap.php" colors="true" strict="true"
+<phpunit bootstrap="bootstrap.php" colors="true" strict="true"
          verbose="true"
          timeoutForSmallTests="900"
          timeoutForMediumTests="900"
          timeoutForLargeTests="900">
     <testsuites>
         <testsuite name="unit">
-            <directory>./tests/unit</directory>
+            <directory>./unit</directory>
         </testsuite>
     </testsuites>
     <!-- filters for code coverage -->
     <filter>
         <whitelist>
-            <directory suffix=".php">../nextnotes/appinfo</directory>
-            <directory suffix=".php">../nextnotes/controller</directory>
-            <directory suffix=".php">../nextnotes/service</directory>
+            <directory suffix=".php">../../nextnotes/appinfo</directory>
+            <directory suffix=".php">../../nextnotes/controller</directory>
+            <directory suffix=".php">../../nextnotes/service</directory>
         </whitelist>
     </filter>
     <logging>

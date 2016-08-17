@@ -37,6 +37,9 @@ script:
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' = '2' ]; then ./occ app:check-code $APP_NAME -c deprecation; fi"
   - cd apps/$APP_NAME/
 
+  # Run unit and integration tests from test directory
+  - cd tests/
+
   # Run phpunit unit tests
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then phpunit --configuration phpunit.xml; fi"
 
@@ -48,9 +51,9 @@ script:
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
 
   # Run Javascript unit tests
-#  - cd tests/js
-#  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
-#  - cd ../
+  - cd js/
+  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
+  - cd ../../
 
 matrix:
   include:

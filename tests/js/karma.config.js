@@ -7,3 +7,6 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
+module.exports = function(config) {
+
+};

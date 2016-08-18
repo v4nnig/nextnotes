@@ -1,4 +1,5 @@
-# Next Notes (v1.0.0) **DO NOT USE IT UNTIL THE APPSTORE OF NEXTCLOUD IS OUT OF BETA STATE**
+# Next Notes (v1.0.0)
+**DO NOT USE IT UNTIL THE APPSTORE OF NEXTCLOUD IS OUT OF BETA STATE AND THE BUILD HAS PROCESSED SUCCESSFULLY**
 [![Build Status](https://travis-ci.org/janis91/nextnotes.svg?branch=master)](https://travis-ci.org/janis91/nextnotes) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/janis91/nextnotes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/janis91/nextnotes/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/janis91/nextnotes/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/janis91/nextnotes/?branch=master)
 
 A new Nextcloud app for enhanced organization of notes.

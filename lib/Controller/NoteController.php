@@ -55,7 +55,9 @@ class NoteController extends Controller {
      * @return DataResponse
      */
     public function index() {
-        return new DataResponse($this->service->findAll($this->userId));
+        return $this->handleNotFound(function (){
+            return $this->service->findAll($this->userId);
+        });
     }
 
     /**

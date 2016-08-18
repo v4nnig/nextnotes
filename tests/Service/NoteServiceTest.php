@@ -8,30 +8,32 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
-namespace OCA\NextNotes\Service;
+namespace OCA\NextNotes\Tests\Service;
 
-use OC\TagManager;
-use PHPUnit_Framework_TestCase;
-
+use OCA\NextNotes\Service\NoteService;
+use OCA\NextNotes\Tests\TestCase;
 use OCP\AppFramework\Db\DoesNotExistException;
-
 use OCA\NextNotes\Db\Note;
 
-class NoteServiceTest extends PHPUnit_Framework_TestCase {
+class NoteServiceTest extends TestCase {
 
     private $service;
     private $tagService;
     private $mapper;
+    private $logger;
     private $userId = 'john';
 
     public function setUp() {
+        $this->logger = $this->getMockBuilder('OCP\ILogger')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->mapper = $this->getMockBuilder('OCA\NextNotes\Db\NoteMapper')
             ->disableOriginalConstructor()
             ->getMock();
         $this->tagService = $this->getMockBuilder('OCA\NextNotes\Service\TagService')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->service = new NoteService($this->mapper,$this->tagService);
+        $this->service = new NoteService($this->mapper,$this->tagService,$this->logger);
     }
 
     public function testUpdate() {

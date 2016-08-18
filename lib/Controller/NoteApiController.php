@@ -84,7 +84,9 @@ class NoteApiController extends ApiController {
      * @return JSONResponse
      */
     public function create($title, $content) {
-        return $this->service->create($title, $content, $this->userId);
+        return $this->handleNotFound(function () use ($title, $content) {
+            return $this->service->create($title, $content, $this->userId);
+        });
     }
 
     /**

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="bootstrap.php" colors="true" verbose="true"
+<phpunit bootstrap="bootstrap.php"
+         colors="true"
+         verbose="true"
          timeoutForSmallTests="900"
          timeoutForMediumTests="900"
-         timeoutForLargeTests="900">
-    <testsuites>
-        <testsuite name="unit">
-            <directory>./unit</directory>
-        </testsuite>
-    </testsuites>
-    <!-- filters for code coverage -->
-    <filter>
-        <whitelist>
-            <directory suffix=".php">../../nextnotes/lib/Controller</directory>
-            <directory suffix=".php">../../nextnotes/lib/Service</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <!-- and this is where your report will be written -->
-        <log type="coverage-clover" target="./clover.xml"/>
-    </logging>
+         timeoutForLargeTests="900"
+>
+<testsuite name='Next Notes Tests'>
+    <directory suffix='Test.php'>.</directory>
+</testsuite>
+<!-- filters for code coverage -->
+<filter>
+    <whitelist>
+        <directory suffix=".php">../../nextnotes/appinfo</directory>
+        <directory suffix=".php">../../nextnotes/lib</directory>
+    </whitelist>
+</filter>
+<logging>
+    <!-- and this is where your report will be written -->
+    <log type="coverage-clover" target="./clover.xml"/>
+</logging>
 </phpunit>

@@ -8,7 +8,9 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
-namespace OCA\NextNotes\Controller;
+namespace OCA\NextNotes\Tests\Controller;
+
+use OCA\NextNotes\Controller\NoteApiController;
 
 require_once __DIR__ . '/NoteControllerTest.php';
 

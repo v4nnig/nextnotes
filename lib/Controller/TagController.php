@@ -53,7 +53,9 @@ class TagController extends Controller {
      * @return DataResponse
      */
     public function index(){
-        return $this->service->getTagList();
+        return $this->handleNotFound(function () {
+            return $this->service->getTagList();
+        });
     }
 
     /**
@@ -76,7 +78,9 @@ class TagController extends Controller {
      * @return DataResponse
      */
     public function create($id, $title){
-        return $this->service->createTag($id, $title);
+        return $this->handleNotFound(function () use ($id, $title){
+            return $this->service->createTag($id, $title);
+        });
     }
 
     /**

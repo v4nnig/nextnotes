@@ -49,11 +49,11 @@ script:
   # Create coverage report
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' -a '$RUNONCE' = '1']; then wget https://scrutinizer-ci.com/ocular.phar; fi"
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' -a '$RUNONCE' = '1']; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
-
+  - cd ../
   # Run Javascript unit tests
-  - cd js/
-  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
-  - cd ../../
+#  - cd js/
+#  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
+#  - cd ../../
 
 matrix:
   include:
@@ -65,8 +65,6 @@ matrix:
       env: DB=mysql;CODECHECK=1
     - php: 5.6
       env: DB=mysql;CODECHECK=2
-    - php: 5.6
-      env: DB=mysql;JSTESTS=1
   allow_failures:
     - env: DB=mysql;CODECHECK=2
 fast_finish: true

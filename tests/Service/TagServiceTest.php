@@ -8,24 +8,28 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
-namespace OCA\NextNotes\Service;
+namespace OCA\NextNotes\Tests\Service;
 
 
-use PHPUnit_Framework_TestCase;
+use OCA\NextNotes\Service\TagService;
+use OCA\NextNotes\Tests\TestCase;
 
-use OCP\AppFramework\Db\DoesNotExistException;
 
 
-class TagServiceTest extends PHPUnit_Framework_TestCase {
+class TagServiceTest extends TestCase {
 
 	private $tagM;
 	private $service;
+	private $logger;
 	private $userId = 'john';
 
 	public function setUp() {
+		$this->logger = $this->getMockBuilder('OCP\ILogger')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->tagM = $this->getMockBuilder('\OCP\ITagManager')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->service = new TagService($this->tagM);
+		$this->service = new TagService($this->tagM, $this->logger);
 	}
 }

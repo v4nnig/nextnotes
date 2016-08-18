@@ -60,7 +60,13 @@ class NoteService {
      * @return \JsonSerializable
      */
     public function findAll($userId) {
-        return $this->mapper->findAll($userId);
+        try{
+            $notes = $this->mapper->findAll($userId);
+            $this->logger->debug('Fetch notes: '.json_encode($notes), ['app' => 'nextnotes']);
+            return $notes;
+        }catch (Exception $e){
+            $this->handleException($e);
+        }
     }
 
     /**

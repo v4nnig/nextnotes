@@ -9,14 +9,14 @@
  * @copyright Janis Koehr 2016
  */
 
-namespace OCA\NextNotes\Controller;
+namespace OCA\NextNotes\Tests\Controller;
 
-use PHPUnit_Framework_TestCase;
-
+use OCA\NextNotes\Controller\PageController;
+use OCA\NextNotes\Tests\TestCase;
 use OCP\AppFramework\Http\TemplateResponse;
 
 
-class PageControllerTest extends PHPUnit_Framework_TestCase {
+class PageControllerTest extends TestCase {
 
 	private $controller;
 

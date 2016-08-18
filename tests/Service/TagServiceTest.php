@@ -32,4 +32,8 @@ class TagServiceTest extends TestCase {
 			->getMock();
 		$this->service = new TagService($this->tagM, $this->logger);
 	}
+
+	public function testFindAll(){
+		
+	}
 }

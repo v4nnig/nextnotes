@@ -17,6 +17,7 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\ILogger;
 use OCP\ITagManager;
 
 
@@ -31,13 +32,19 @@ class TagService {
      */
     private $tagM;
 
+	/**
+     * @var ILogger
+     */
+    private $logger;
 
     /**
      * TagService constructor.
      * @param ITagManager $tagManager
+     * @param ILogger $logger
      */
-    public function __construct(ITagManager $tagManager){
+    public function __construct(ITagManager $tagManager, ILogger $logger){
         $this->tagM = $tagManager->load('nextnotes');
+        $this->logger = $logger;
     }
 
     /**
@@ -46,6 +53,7 @@ class TagService {
      * @throws NotFoundException
      */
     private function handleException ($e) {
+        $this->logger->logException($e,['app' => 'nextnotes', 'message' => 'Exception during tag service function processing']);
         if ($e instanceof DoesNotExistException ||
             $e instanceof MultipleObjectsReturnedException ||
             $e instanceof NotChangeException ||
@@ -74,6 +82,7 @@ class TagService {
             $tags = $this->tagM->getTagsForObjects($ids);
             if ($tags !== false) {
                 if(!empty($tags)){
+                    $this->logger->debug('Fetch tags for ids: '.json_encode($tags), ['app' => 'nextnotes']);
                     return $tags;
                 }
                 return array();
@@ -93,6 +102,7 @@ class TagService {
     public function getTagList(){
         try{
             $tags = $this->tagM->getTags();
+            $this->logger->debug('Fetch all tags: '.json_encode($tags), ['app' => 'nextnotes']);
             $result = array();
             foreach($tags as $tag){
                 array_push($result, $tag['name']);
@@ -114,6 +124,7 @@ class TagService {
         try{
             if(!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if ($this->tagM->tagAs($noteId,$title)){
+                $this->logger->debug('Tag created: '.$title, ['app' => 'nextnotes']);
                 return new DataResponse(array());
             }else{
                 throw new NotChangeException('Cannot create tag.');
@@ -134,6 +145,7 @@ class TagService {
         try{
             if(!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if($this->tagM->unTag($noteId, $title)){
+                $this->logger->debug('Untagged '.$title.' for note '.$noteId, ['app' => 'nextnotes']);
                 return new DataResponse(array());
             }else{
                 throw new NotChangeException('Cannot untag.');
@@ -153,6 +165,7 @@ class TagService {
         try{
             if(!isset($noteId) OR $noteId === 'undefined'){throw new WrongCallException('WRONG ARGUMENTS');}
             if($this->tagM->purgeObjects(array($noteId))){
+                $this->logger->debug('Purged tags for note '.$noteId, ['app' => 'nextnotes']);
                 return new DataResponse(array());
             }else{
                 throw new NotFoundException('Could not purge.');
@@ -175,6 +188,7 @@ class TagService {
                 $titles = array($titles);
             }
             if($this->tagM->delete($titles)){
+                $this->logger->debug('Deleted tag: '.json_encode($titles), ['app' => 'nextnotes']);
                 return new DataResponse(array());
             }else{
                 throw new NotFoundException('Could not delete.');

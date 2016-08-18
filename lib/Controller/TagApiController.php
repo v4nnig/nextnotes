@@ -105,6 +105,7 @@ class TagApiController extends ApiController {
      * Delete Tag completely from DB
      * @CORS
      * @NoCSRFRequired
+     * @NoAdminRequired
      * @param $title
      * @return DataResponse
      */

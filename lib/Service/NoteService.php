@@ -17,6 +17,8 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 
 use OCA\NextNotes\Db\Note;
 use OCA\NextNotes\Db\NoteMapper;
+use OCP\ILogger;
+use OCP\Util;
 
 
 /**
@@ -34,14 +36,21 @@ class NoteService {
      */
     private $service;
 
+	/**
+     * @var ILogger
+     */
+    private $logger;
+
     /**
      * NoteService constructor.
      * @param NoteMapper $mapper
      * @param TagService $tagService
+     * @param ILogger $logger
      */
-    public function __construct(NoteMapper $mapper, TagService $tagService){
+    public function __construct(NoteMapper $mapper, TagService $tagService, ILogger $logger){
         $this->mapper = $mapper;
         $this->service = $tagService;
+        $this->logger = $logger;
     }
 
 
@@ -60,6 +69,7 @@ class NoteService {
      * @throws NotFoundException
      */
     private function handleException ($e) {
+        $this->logger->logException($e,['app' => 'nextnotes', 'message' => 'Exception during note service function processing']);
         if ($e instanceof DoesNotExistException ||
             $e instanceof MultipleObjectsReturnedException ||
             $e instanceof WrongCallException) {
@@ -78,7 +88,9 @@ class NoteService {
      */
     public function find($id, $userId) {
         try {
-            return $this->mapper->find($id, $userId);
+            $note = $this->mapper->find($id, $userId);
+            $this->logger->debug('Fetch note for id '.$id.': '.json_encode($note), ['app' => 'nextnotes']);
+            return $note;
         } catch(Exception $e) {
             $this->handleException($e);
         }
@@ -101,7 +113,9 @@ class NoteService {
         $note->setTitle($title);
         $note->setContent($content);
         $note->setUserId($userId);
-        return $this->mapper->insert($note);
+        $object = $this->mapper->insert($note);
+        $this->logger->debug('Created note: '.json_encode($object), ['app' => 'nextnotes']);
+        return $object;
     }
 
     /**
@@ -121,7 +135,9 @@ class NoteService {
             $note = $this->mapper->find($id, $userId);
             $note->setTitle($title);
             $note->setContent($content);
-            return $this->mapper->update($note);
+            $object = $this->mapper->update($note);
+            $this->logger->debug('Updated note: '.json_encode($object), ['app' => 'nextnotes']);
+            return $object;
         } catch(Exception $e) {
             $this->handleException($e);
         }
@@ -141,6 +157,7 @@ class NoteService {
             //now delete the note
             $note = $this->mapper->find($id, $userId);
             $this->mapper->delete($note);
+            $this->logger->debug('Deleted note: '.json_encode($note), ['app' => 'nextnotes']);
             return $note;
         } catch(Exception $e) {
             $this->handleException($e);
@@ -200,11 +217,17 @@ class NoteService {
             });
             
             if(!empty($terms) AND !$tagSearch){ // fulltext search no tags
-                return $this->mapper->fulltextSearchWithoutTagFilter($terms, $userId);
+                $result = $this->mapper->fulltextSearchWithoutTagFilter($terms, $userId);
+                $this->logger->debug('Fulltext search without tag filter. Result for search terms: '.json_encode($terms).': '.json_encode($result), ['app' => 'nextnotes']);
+                return $result;
             }elseif (empty($terms) AND $tagSearch AND isset($tags)){ // tag search no fulltext
-                return $this->mapper->tagSearch($tags, $userId);
+                $result = $this->mapper->tagSearch($tags, $userId);
+                $this->logger->debug('Tag search. Result for searched tags: '.json_encode($tags).': '.json_encode($result), ['app' => 'nextnotes']);
+                return $result;
             }elseif (!empty($terms) AND $tagSearch AND isset($tags)) {// fulltext search with tags
-                return $this->mapper->fulltextSearchWithTagFilter($terms, $tags, $userId);
+                $result = $this->mapper->fulltextSearchWithTagFilter($terms, $tags, $userId);
+                $this->logger->debug('Fulltext search with tag filter. Result for search terms: '.json_encode($terms).', filtered with following tags: '.json_encode($tags).': '.json_encode($result), ['app' => 'nextnotes']);
+                return $result;
             }else{
                 throw new NotFoundException('No Notes found.');
             }
@@ -218,9 +241,28 @@ class NoteService {
      * @param $userId
      * @throws NotFoundException
      */
-    public function post_deleteUser($userId){
+    public function deleteNotesForUser($userId){
         try{
             $this->mapper->deleteAllForUser($userId);
+            $this->logger->debug('DeleteUser hook. Deleted all notes for user: '.$userId, ['app' => 'nextnotes']);
+        }catch (Exception $e){
+            $this->handleException($e);
+        }
+    }
+
+	/**
+     * Creates the first note of a user (post create) -> Introduction Note
+     * @param $userId
+     * @throws NotFoundException
+     */
+    public function createIntroNoteForUser($userId){
+        try{
+            $note = new Note();
+            $note->setTitle('# Welcome to Next Notes!');
+            $note->setContent('# Welcome to Next Notes!');
+            $note->setUserId($userId);
+            $this->mapper->insert($note);
+            $this->logger->debug('CreateUser hook. Created the introduction note for user: '.$userId, ['app' => 'nextnotes']);
         }catch (Exception $e){
             $this->handleException($e);
         }

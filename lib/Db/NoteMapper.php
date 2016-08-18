@@ -10,8 +10,9 @@
  */
 namespace OCA\NextNotes\Db;
 
-use OCP\IDb;
+
 use OCP\AppFramework\Db\Mapper;
+use OCP\IDBConnection;
 
 /**
  * Class NoteMapper
@@ -21,11 +22,11 @@ class NoteMapper extends Mapper {
 
     /**
      * NoteMapper constructor.
-     * @param IDb $db
+     * @param IDBConnection $db
      * @param tablename
      * @param Entity
      */
-    public function __construct(IDb $db) {
+    public function __construct(IDBConnection $db) {
         parent::__construct($db, 'nextnotes_notes', '\OCA\NextNotes\Db\Note');
     }
 

@@ -11,3 +11,4 @@
 
 $app = new \OCA\NextNotes\AppInfo\Application();
 $app->registerNavigationEntry();
+$app->registerHooks();

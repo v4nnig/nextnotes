@@ -11,7 +11,15 @@
 
 namespace OCA\NextNotes\AppInfo;
 
+use OCA\NextNotes\Controller\NoteController;
+use OCA\NextNotes\Controller\TagController;
+use OCA\NextNotes\Db\NoteMapper;
+use OCA\NextNotes\Service\NoteService;
+use OCA\NextNotes\Service\TagService;
 use OCP\AppFramework\App;
+use OCP\AppFramework\IAppContainer;
+use OCP\IContainer;
+use OCP\Util;
 
 /**
  * Class Application
@@ -25,10 +33,74 @@ class Application extends App {
 	 *
 	 * @param array $urlParams
 	 */
-	public function __construct(array $urlParams = array()) {
+	public function __construct(array $urlParams = array()){
 		parent::__construct('nextnotes', $urlParams);
 		$container = $this->getContainer();
-		
+
+		/**
+		 * Register the Next Notes Services
+		 */
+		$container->registerService('NoteMapper', function(IContainer $c) {
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new NoteMapper(
+				$server->getDatabaseConnection()
+			);
+		});
+
+		$container->registerService('TagService', function (IContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new TagService(
+				$server->getTagManager(),
+				$server->getLogger()
+			);
+		});
+
+		$container->registerService('NoteService', function (IContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new NoteService(
+				$c->query('NoteMapper'),
+				$c->query('TagService'),
+				$server->getLogger()
+			);
+		});
+
+		/**
+		 * Register core services
+		 */
+		$container->registerService('CurrentUID', function(IContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			$user = $server->getUserSession()->getUser();
+			return ($user) ? $user->getUID() : '';
+		});
+
+		/**
+		 * Controller
+		 */
+		$container->registerService('NoteController', function(IAppContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new NoteController(
+				$c->getAppName(),
+				$server->getRequest(),
+				$c->query('NoteService'),
+				$c->query('CurrentUID')
+			);
+		});
+
+		$container->registerService('TagController', function (IAppContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new TagController(
+				$c->getAppName(),
+				$server->getRequest(),
+				$c->query('TagService'),
+				$c->query('CurrentUID')
+			);
+		});
 	}
 
 	/**
@@ -59,5 +131,16 @@ class Application extends App {
 				'name' => $l10n->t('Next Notes'),
 			];
 		});
+	}
+	
+	/**
+	 * Register Hooks
+	 */
+	public function registerHooks(){
+		// Tags
+		Util::connectHook('OC_User', 'post_deleteUser', 'OC\Tags', 'post_deleteUser');
+		// Notes
+		Util::connectHook('OC_User', 'post_deleteUser', 'OCA\NextNotes\Hooks\UserHooks', 'deleteUser'); //DELETE
+		Util::connectHook('OC_User', 'post_createUser', 'OCA\NextNotes\Hooks\UserHooks', 'createUser'); //CREATE
 	}
 }

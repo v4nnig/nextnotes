@@ -94,6 +94,7 @@ class TagController extends Controller {
 
     /**
      * Delete Tag completely from DB
+     * @NoAdminRequired
      * @param $title
      * @return DataResponse
      */

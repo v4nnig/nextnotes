@@ -42,6 +42,7 @@ class TagService {
      * @param ITagManager $tagManager
      * @param ILogger $logger
      */
+    // FIXME: TagManager should not be loaded in the constructor. This is bad behaviour!
     public function __construct(ITagManager $tagManager, ILogger $logger){
         $this->tagM = $tagManager->load('nextnotes');
         $this->logger = $logger;

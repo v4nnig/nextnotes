@@ -1,12 +1,7 @@
 #Ideas for future improvements:
 
 ##Version 1.0:
-* Create unit tests and integration tests.
-* Test the javascript. jasmine configuration and npm with package.json
-* Logging of the app would be great. => Util::writelog() and logException()
-* Delete user hook is necessary
 * L10N
-* CHANGELOG. And recheck the .github files (links etc.)
 
 ##Version 2.0:
 * Separate title and content from each other. (Has effect on searchqueries and some other things like content view container and creation/update.)

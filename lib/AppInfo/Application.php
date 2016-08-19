@@ -48,11 +48,17 @@ class Application extends App {
 			);
 		});
 
-		$container->registerService('TagService', function (IContainer $c){
+		$container->registerService('Tagger', function (IAppContainer $c){
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return $server->getTagManager()->load($c->getAppName(),null,true,$c->query('CurrentUID'));
+		});
+
+		$container->registerService('TagService', function (IAppContainer $c){
 			/** @var \OC\Server $server */
 			$server = $c->query('ServerContainer');
 			return new TagService(
-				$server->getTagManager(),
+				$c->query('Tagger'),
 				$server->getLogger()
 			);
 		});

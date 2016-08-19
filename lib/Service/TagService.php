@@ -18,7 +18,8 @@ use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http\JSONResponse;
 use OCP\ILogger;
-use OCP\ITagManager;
+use OCP\ITags;
+use OCP\Share\IManager;
 
 
 /**
@@ -28,7 +29,7 @@ use OCP\ITagManager;
 class TagService {
 
     /**
-     * @var \OCP\ITagManager
+     * @var \OCP\ITags
      */
     private $tagM;
 
@@ -39,12 +40,11 @@ class TagService {
 
     /**
      * TagService constructor.
-     * @param ITagManager $tagManager
+     * @param ITags $tagManager
      * @param ILogger $logger
      */
-    // FIXME: TagManager should not be loaded in the constructor. This is bad behaviour!
-    public function __construct(ITagManager $tagManager, ILogger $logger){
-        $this->tagM = $tagManager->load('nextnotes');
+    public function __construct(ITags $tagManager, ILogger $logger){
+        $this->tagM = $tagManager;
         $this->logger = $logger;
     }
 

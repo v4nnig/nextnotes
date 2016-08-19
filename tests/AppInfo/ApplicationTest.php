@@ -53,6 +53,7 @@ class ApplicationTest extends TestCase {
 		return array(
 			array('NoteMapper', 'OCA\NextNotes\Db\NoteMapper'),
 			array('OCP\IL10N', 'OCP\IL10N'),
+			array('Tagger', 'OCP\ITags'),
 			array('TagService', 'OCA\NextNotes\Service\TagService'),
 			array('NoteService', 'OCA\NextNotes\Service\NoteService'),
 			array('NoteController', 'OCP\AppFramework\Controller'),

@@ -111,17 +111,21 @@ class NoteService {
      * @throws WrongCallException
      */
     public function create($title, $content, $userId) {
-        // if($title) empty then do not create note
-        if(strlen($title) === 0){
-            throw new WrongCallException("Could not create note. Empty title.");
+        try{
+            // if($title) empty then do not create note
+            if(strlen($title) === 0){
+                throw new WrongCallException("Could not create note. Empty title.");
+            }
+            $note = new Note();
+            $note->setTitle($title);
+            $note->setContent($content);
+            $note->setUserId($userId);
+            $object = $this->mapper->insert($note);
+            $this->logger->debug('Created note: '.json_encode($object), ['app' => 'nextnotes']);
+            return $object;
+        }catch (Exception $e){
+            $this->handleException($e);
         }
-        $note = new Note();
-        $note->setTitle($title);
-        $note->setContent($content);
-        $note->setUserId($userId);
-        $object = $this->mapper->insert($note);
-        $this->logger->debug('Created note: '.json_encode($object), ['app' => 'nextnotes']);
-        return $object;
     }
 
     /**

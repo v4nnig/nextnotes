@@ -53,4 +53,12 @@ class AppTest extends TestCase {
 		$this->assertCount(2, \OC_Hook::getHooks()['OC_User']);
 		$this->assertCount(2, \OC_Hook::getHooks()['OC_User']['post_deleteUser']);
 	}
+
+	/**
+	 * Tests the registration of the share backend
+	 */
+	public function testRegisterShareBackend(){
+		require '../appinfo/app.php';
+		$this->assertInstanceOf('\OCP\Share_Backend', \OCP\Share::getBackend('nextnotes'));
+	}
 }

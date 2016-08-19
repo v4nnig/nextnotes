@@ -11,14 +11,11 @@
 namespace OCA\NextNotes\Service;
 
 use Exception;
-
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
-
 use OCA\NextNotes\Db\Note;
 use OCA\NextNotes\Db\NoteMapper;
 use OCP\ILogger;
-use OCP\Util;
 
 
 /**
@@ -36,7 +33,7 @@ class NoteService {
      */
     private $service;
 
-	/**
+    /**
      * @var ILogger
      */
     private $logger;
@@ -80,7 +77,7 @@ class NoteService {
             $e instanceof MultipleObjectsReturnedException ||
             $e instanceof WrongCallException) {
             throw new NotFoundException($e->getMessage());
-        }else {
+        } else {
             throw $e;
         }
     }
@@ -230,15 +227,15 @@ class NoteService {
                 $result = $this->mapper->fulltextSearchWithoutTagFilter($terms, $userId);
                 $this->logger->debug('Fulltext search without tag filter. Result for search terms: '.json_encode($terms).': '.json_encode($result), ['app' => 'nextnotes']);
                 return $result;
-            }elseif (empty($terms) AND $tagSearch AND isset($tags)) { // tag search no fulltext
+            } elseif (empty($terms) AND $tagSearch AND isset($tags)) { // tag search no fulltext
                 $result = $this->mapper->tagSearch($tags, $userId);
                 $this->logger->debug('Tag search. Result for searched tags: '.json_encode($tags).': '.json_encode($result), ['app' => 'nextnotes']);
                 return $result;
-            }elseif (!empty($terms) AND $tagSearch AND isset($tags)) {// fulltext search with tags
+            } elseif (!empty($terms) AND $tagSearch AND isset($tags)) {// fulltext search with tags
                 $result = $this->mapper->fulltextSearchWithTagFilter($terms, $tags, $userId);
                 $this->logger->debug('Fulltext search with tag filter. Result for search terms: '.json_encode($terms).', filtered with following tags: '.json_encode($tags).': '.json_encode($result), ['app' => 'nextnotes']);
                 return $result;
-            }else {
+            } else {
                 throw new NotFoundException('No Notes found.');
             }
         } catch (Exception $e) {
@@ -246,7 +243,7 @@ class NoteService {
         }
     }
 
-	/**
+    /**
      * For Hook post_deleteUser: deletes all notes of a specific user.
      * @param $userId
      * @throws NotFoundException
@@ -260,7 +257,7 @@ class NoteService {
         }
     }
 
-	/**
+    /**
      * Creates the first note of a user (post create) -> Introduction Note
      * @param $userId
      * @throws NotFoundException

@@ -22,25 +22,25 @@ use OCP\AppFramework\Controller;
  */
 class PageController extends Controller {
 
-	/**
-	 * PageController constructor.
-	 * @param string $AppName
-	 * @param IRequest $request
+    /**
+     * PageController constructor.
+     * @param string $AppName
+     * @param IRequest $request
      */
-	public function __construct($AppName, IRequest $request){
-		parent::__construct($AppName, $request);
-	}
+    public function __construct($AppName, IRequest $request){
+        parent::__construct($AppName, $request);
+    }
 
-	/**
-	 * Index method for the internal Next Notes part.
-	 * Responds the main template for Next Notes.
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @return TemplateResponse
-	 */
-	public function index() {
-		return new TemplateResponse('nextnotes', 'main');
-	}
+    /**
+     * Index method for the internal Next Notes part.
+     * Responds the main template for Next Notes.
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @return TemplateResponse
+     */
+    public function index() {
+        return new TemplateResponse('nextnotes', 'main');
+    }
 
 
 

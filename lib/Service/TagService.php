@@ -47,7 +47,7 @@ class TagService {
 
     /**
      * Handle the possible thrown Exceptions from all methods of this class.
-     * @param $e
+     * @param Exception $e
      * @throws NotFoundException
      */
     private function handleException($e) {
@@ -57,7 +57,7 @@ class TagService {
             $e instanceof NotChangeException ||
             $e instanceof WrongCallException) {
             throw new NotFoundException($e->getMessage());
-        }else {
+        } else {
             throw $e;
         }
     }
@@ -113,8 +113,8 @@ class TagService {
 
     /**
      * Create a tag for the given noteId and tagTitle.
-     * @param $noteId
-     * @param $title
+     * @param integer $noteId
+     * @param string $title
      * @return DataResponse
      * @throws NotFoundException
      */
@@ -124,7 +124,7 @@ class TagService {
             if ($this->tagM->tagAs($noteId, $title)) {
                 $this->logger->debug('Tag created: '.$title, ['app' => 'nextnotes']);
                 return new DataResponse(array());
-            }else {
+            } else {
                 throw new NotChangeException('Cannot create tag.');
             }
         } catch (Exception $e) {
@@ -134,8 +134,8 @@ class TagService {
 
     /**
      * Untag: delete the obejct relation between given noteId and given tagtitle.
-     * @param $noteId
-     * @param $title
+     * @param integer $noteId
+     * @param string $title
      * @return DataResponse
      * @throws NotFoundException
      */
@@ -145,7 +145,7 @@ class TagService {
             if ($this->tagM->unTag($noteId, $title)) {
                 $this->logger->debug('Untagged '.$title.' for note '.$noteId, ['app' => 'nextnotes']);
                 return new DataResponse(array());
-            }else {
+            } else {
                 throw new NotChangeException('Cannot untag.');
             }
         } catch (Exception $e) {
@@ -155,7 +155,7 @@ class TagService {
 
     /**
      * If a note gets deleted, the object relation has to be removed.
-     * @param $noteId
+     * @param integer $noteId
      * @return DataResponse
      * @throws NotFoundException
      */
@@ -165,7 +165,7 @@ class TagService {
             if ($this->tagM->purgeObjects(array($noteId))) {
                 $this->logger->debug('Purged tags for note '.$noteId, ['app' => 'nextnotes']);
                 return new DataResponse(array());
-            }else {
+            } else {
                 throw new NotFoundException('Could not purge.');
             }
         } catch (Exception $e) {
@@ -188,7 +188,7 @@ class TagService {
             if ($this->tagM->delete($titles)) {
                 $this->logger->debug('Deleted tag: '.json_encode($titles), ['app' => 'nextnotes']);
                 return new DataResponse(array());
-            }else {
+            } else {
                 throw new NotFoundException('Could not delete.');
             }
         } catch (Exception $e) {

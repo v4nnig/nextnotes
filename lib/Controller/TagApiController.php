@@ -42,7 +42,7 @@ class TagApiController extends ApiController {
      * @param TagService $tagService
      * @param string $UserId
      */
-    public function __construct($AppName, IRequest $request, TagService $tagService, $UserId){
+    public function __construct($AppName, IRequest $request, TagService $tagService, $UserId) {
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
         $this->service = $tagService;
@@ -55,8 +55,8 @@ class TagApiController extends ApiController {
      * @NoAdminRequired
      * @return DataResponse
      */
-    public function index(){
-        return $this->handleNotFound(function () {
+    public function index() {
+        return $this->handleNotFound(function() {
             return $this->service->getTagList();
         });
     }
@@ -70,7 +70,7 @@ class TagApiController extends ApiController {
      * @return DataResponse
      */
     public function show($ids) {
-        return $this->handleNotFound(function () use ($ids){
+        return $this->handleNotFound(function() use ($ids){
             return $this->service->findAll($ids);
         });
     }
@@ -84,8 +84,8 @@ class TagApiController extends ApiController {
      * @param string $title
      * @return DataResponse
      */
-    public function create($id, $title){
-        return $this->handleNotFound(function () use ($id, $title){
+    public function create($id, $title) {
+        return $this->handleNotFound(function() use ($id, $title){
             return $this->service->createTag($id, $title);
         });
     }
@@ -99,8 +99,8 @@ class TagApiController extends ApiController {
      * @param string $title
      * @return DataResponse
      */
-    public function remove($id, $title){
-        return $this->handleNotFound(function () use ($id, $title){
+    public function remove($id, $title) {
+        return $this->handleNotFound(function() use ($id, $title){
             return $this->service->unTag($id, $title);
         });
     }
@@ -113,8 +113,8 @@ class TagApiController extends ApiController {
      * @param $title
      * @return DataResponse
      */
-    public function delete($title){
-        return $this->handleNotFound(function () use ($title){
+    public function delete($title) {
+        return $this->handleNotFound(function() use ($title){
             return $this->service->delete($title);
         });
     }

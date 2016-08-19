@@ -41,7 +41,7 @@ class TagController extends Controller {
      * @param TagService $tagService
      * @param $UserId
      */
-    public function __construct($AppName, IRequest $request, TagService $tagService, $UserId){
+    public function __construct($AppName, IRequest $request, TagService $tagService, $UserId) {
         parent::__construct($AppName, $request);
         $this->userId = $UserId;
         $this->service = $tagService;
@@ -52,8 +52,8 @@ class TagController extends Controller {
      * @NoAdminRequired
      * @return DataResponse
      */
-    public function index(){
-        return $this->handleNotFound(function () {
+    public function index() {
+        return $this->handleNotFound(function() {
             return $this->service->getTagList();
         });
     }
@@ -77,8 +77,8 @@ class TagController extends Controller {
      * @param string $title
      * @return DataResponse
      */
-    public function create($id, $title){
-        return $this->handleNotFound(function () use ($id, $title){
+    public function create($id, $title) {
+        return $this->handleNotFound(function() use ($id, $title){
             return $this->service->createTag($id, $title);
         });
     }

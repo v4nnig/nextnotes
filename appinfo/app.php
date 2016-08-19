@@ -9,7 +9,7 @@
  * @copyright Janis Koehr 2016
  */
 
-\OCP\Share::registerBackend('nextnotes','OCA\NextNotes\Share\Backend');
+\OCP\Share::registerBackend('nextnotes', 'OCA\NextNotes\Share\Backend');
 
 $app = new \OCA\NextNotes\AppInfo\Application();
 $app->registerNavigationEntry();

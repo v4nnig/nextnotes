@@ -42,12 +42,14 @@
 				self._tags.loadAll().done(function(){
 					self._view.render();
 				}).fail(function(){
+					/** global: OC */
 					OC.Notification.showTemporary(t('nextnotes','Could not load tags.'), {
 						timeout: 10,
 						isHTML: false
 					});
 				});
 			}).fail(function () {
+				/** global: OC */
 				OC.Notification.showTemporary(t('nextnotes','Could not load notes.'), {
 					timeout: 10,
 					isHTML: false
@@ -97,6 +99,7 @@
 								self._view._notes.create(note).done(function() {
 									self._view.render();
 								}).fail(function () {
+									/** global: OC */
 									OC.Notification.showTemporary(t('nextnotes','Could not create note.'), {
 										timeout: 10,
 										isHTML: false
@@ -106,6 +109,7 @@
 								$.when(self._view._notes.updateActive(title, content)).done(function () {
 									self._view.render();
 								}).fail(function () {
+									/** global: OC */
 									OC.Notification.showTemporary(t('nextnotes','Could not update note. Note not found.'), {
 										timeout: 10,
 										isHTML: false

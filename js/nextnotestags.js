@@ -15,6 +15,7 @@
 	 * @constructor
 	 */
 	var Tags = function (notes){
+		/** global: OC */
 		this._baseUrl = OC.generateUrl('/apps/nextnotes/tags');
 		this._notes = notes;
 		this._availableTags = [];
@@ -42,6 +43,7 @@
 			var deferred = $.Deferred();
 			var self = this;
 			$.ajax({
+				/** global: OC */
 				url: OC.generateUrl('/apps/nextnotes/tagging'),
 				method: 'POST',
 				contentType: 'application/json',
@@ -97,6 +99,7 @@
 			var self = this;
 			var untag = {id: id, title: title};
 			$.ajax({
+				/** global: OC */
 				url: OC.generateUrl('/apps/nextnotes/untag'),
 				contentType: 'application/json',
 				method: 'POST',
@@ -124,6 +127,7 @@
 			var self = this;
 			var deletetag = {title: title};
 			$.ajax({
+				/** global: OC */
 				url: OC.generateUrl('/apps/nextnotes/deletetag'),
 				contentType: 'application/json',
 				method: 'POST',

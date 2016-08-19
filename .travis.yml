@@ -55,6 +55,7 @@ script:
 #  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
 #  - cd ../../
 
+# TODO: add CODECHECK=1 to 3rd item of the matrix
 matrix:
   include:
     - php: 5.6
@@ -62,7 +63,7 @@ matrix:
     - php: 5.6
       env: DB=pgsql
     - php: 5.6
-      env: DB=mysql;CODECHECK=1
+      env: DB=mysql
     - php: 5.6
       env: DB=mysql;CODECHECK=2
   allow_failures:

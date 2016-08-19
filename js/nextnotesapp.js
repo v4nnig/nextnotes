@@ -9,9 +9,11 @@
  */
 (function (OC, window, $, undefined) {
 	'use strict';
+	/** global: OCA */
 	if (!OCA.NextNotes) {
 		/**
 		 * @namespace
+		 * global: OCA
 		 */
 		OCA.NextNotes = {};
 	}
@@ -19,6 +21,7 @@
 	 * OCA.NextNotes.App
 	 * Integrates all necessary objects to build the app.
 	 * @type {{initialize: OCA.NextNotes.App.initialize, createEditor: OCA.NextNotes.App.createEditor}}
+	 * global: OCA
 	 */
 	OCA.NextNotes.App = {
 		/**
@@ -27,8 +30,10 @@
 		initialize: function(){
 			var self = this;
 			// Create the Notes Object
+			/** global: OCA */
 			this._notes = new OCA.NextNotes.Notes(OC.generateUrl('/apps/nextnotes/notes'));
 			// Create the Tags Object
+			/** global: OCA */
 			this._tags = new OCA.NextNotes.Tags(this._notes);
 			// Create the Editor
 			this.createEditor();
@@ -49,6 +54,7 @@
 				});
 			});
 			// Create the View Object
+			/** global: OCA */
 			this._view = new OCA.NextNotes.View(this._notes, this._tags, this._simplemde);
 		},
 		/**
@@ -217,6 +223,7 @@
 	 * Init the App
 	 */
 	$(document).ready(function () {
+		/** global: OCA */
 		OCA.NextNotes.App.initialize();
 	});
 /** global: OC */

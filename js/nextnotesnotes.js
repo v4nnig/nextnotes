@@ -187,6 +187,7 @@
 			});
 		}
 	};
+	/** global: OCA */
 	if (OCA.NextNotes) {
 		OCA.NextNotes.Notes = Notes;
 	}

@@ -80,6 +80,7 @@
 				self._notes.removeActive().done(function () {
 					self.render();
 				}).fail(function () {
+					/** global: OC */
 					OC.Notification.showTemporary(t('nextnotes','Could not delete note. Note not found.'), {
 						timeout: 10,
 						isHTML: false
@@ -169,6 +170,7 @@
 					}).fail(function(){
 						/** global: event */
 						event.preventDefault();
+						/** global: OC */
 						OC.Notification.showTemporary(t('nextnotes','Could not untag.'), {
 							timeout: 10,
 							isHTML: false
@@ -182,6 +184,7 @@
 						$.when(self._tags.createTag(create)).done(function(){
 							self.render();
 						}).fail(function(){
+							/** global: OC */
 							OC.Notification.showTemporary(t('nextnotes','Could not create tag.'), {
 								timeout: 10,
 								isHTML: false
@@ -210,6 +213,7 @@
 						self.render();
 					});
 				}).fail(function(){
+					/** global: OC */
 					OC.Notification.showTemporary(t('nextnotes','Could not load notes.'), {
 						timeout: 10,
 						isHTML: false
@@ -225,6 +229,7 @@
 						self.render();
 					});
 				}).fail(function () {
+					/** global: OC */
 					OC.Notification.showTemporary(t('nextnotes','Could not search for notes.'), {
 						timeout: 10,
 						isHTML: false
@@ -246,6 +251,7 @@
 			// Register the on change action for the deletion dialog for a specific tag
 			$('.nextnotes-delete-tag').on('change', function(){
 				var name = $(this).find(':selected').val();
+				/** global: OC */
 				OC.dialogs.confirm(t('nextnotes', 'Are you really sure you want to delete the tag "{tag}"?',
 					{tag: name}),
 					t('nextnotes', 'Delete tag'), function(answer) {
@@ -264,6 +270,7 @@
 		adoptTheming: function(){
 			//invert color
 			var color = '#fff';
+			/** global: OCA */
 			if(OCA.Theming.inverted){
 				color = '#000';
 			}
@@ -281,6 +288,7 @@
 			this.adoptTheming();
 		}
 	};
+	/** global: OCA */
 	if (OCA.NextNotes) {
 		OCA.NextNotes.View = View;
 	}

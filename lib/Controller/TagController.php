@@ -59,14 +59,14 @@ class TagController extends Controller {
     }
 
     /**
-    * Get all tags for one note.
-    * @NoAdminRequired
-    * @param array $ids
-    * @return DataResponse
-    */
+     * Get all tags for one note.
+     * @NoAdminRequired
+     * @param array $ids
+     * @return DataResponse
+     */
     public function show($ids) {
         return $this->handleNotFound(function () use ($ids){
-           return $this->service->findAll($ids);
+            return $this->service->findAll($ids);
         });
     }
 
@@ -92,7 +92,7 @@ class TagController extends Controller {
      */
     public function remove($id, $title){
         return $this->handleNotFound(function () use ($id, $title){
-           return $this->service->unTag($id, $title);
+            return $this->service->unTag($id, $title);
         });
     }
 
@@ -104,7 +104,7 @@ class TagController extends Controller {
      */
     public function delete($title){
         return $this->handleNotFound(function () use ($title){
-           return $this->service->delete($title);
+            return $this->service->delete($title);
         });
     }
 

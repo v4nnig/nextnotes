@@ -33,7 +33,7 @@ class Application extends App {
      *
      * @param array $urlParams
      */
-    public function __construct(array $urlParams = array()){
+    public function __construct(array $urlParams = array()) {
         parent::__construct('nextnotes', $urlParams);
         $container = $this->getContainer();
 
@@ -48,13 +48,13 @@ class Application extends App {
             );
         });
 
-        $container->registerService('Tagger', function (IAppContainer $c){
+        $container->registerService('Tagger', function(IAppContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
-            return $server->getTagManager()->load($c->getAppName(),null,true,$c->query('CurrentUID'));
+            return $server->getTagManager()->load($c->getAppName(), null, true, $c->query('CurrentUID'));
         });
 
-        $container->registerService('TagService', function (IAppContainer $c){
+        $container->registerService('TagService', function(IAppContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
             return new TagService(
@@ -63,7 +63,7 @@ class Application extends App {
             );
         });
 
-        $container->registerService('NoteService', function (IContainer $c){
+        $container->registerService('NoteService', function(IContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
             return new NoteService(
@@ -76,7 +76,7 @@ class Application extends App {
         /**
          * Register core services
          */
-        $container->registerService('CurrentUID', function(IContainer $c){
+        $container->registerService('CurrentUID', function(IContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
             $user = $server->getUserSession()->getUser();
@@ -86,7 +86,7 @@ class Application extends App {
         /**
          * Controller
          */
-        $container->registerService('NoteController', function(IAppContainer $c){
+        $container->registerService('NoteController', function(IAppContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
             return new NoteController(
@@ -97,7 +97,7 @@ class Application extends App {
             );
         });
 
-        $container->registerService('TagController', function (IAppContainer $c){
+        $container->registerService('TagController', function(IAppContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
             return new TagController(
@@ -114,7 +114,7 @@ class Application extends App {
      */
     public function registerNavigationEntry() {
         $container = $this->getContainer();
-        $container->query('OCP\INavigationManager')->add(function () use ($container) {
+        $container->query('OCP\INavigationManager')->add(function() use ($container) {
             $urlGenerator = $container->query('OCP\IURLGenerator');
             $l10n = $container->query('OCP\IL10N');
             return [
@@ -142,7 +142,7 @@ class Application extends App {
     /**
      * Register Hooks
      */
-    public function registerHooks(){
+    public function registerHooks() {
         // Tags
         Util::connectHook('OC_User', 'post_deleteUser', 'OC\Tags', 'post_deleteUser');
         // Notes

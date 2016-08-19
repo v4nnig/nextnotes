@@ -37,6 +37,9 @@ script:
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' = '2' ]; then ./occ app:check-code $APP_NAME -c deprecation; fi"
   - cd apps/$APP_NAME/
 
+  # Run unit and integration tests from test directory
+  - cd tests/
+
   # Run phpunit unit tests
   - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then phpunit --configuration phpunit.xml; fi"
 
@@ -44,28 +47,25 @@ script:
 # - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then phpunit --configuration phpunit.integration.xml; fi"
 
   # Create coverage report
-  - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi"
-  - sh -c "if [ '$JSTESTS' != '1' -a '$CODECHECK' != '1' -a '$CODECHECK' != '2' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
-
+  - sh -c "if [ '$RUNONCE' = '1' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi"
+  - sh -c "if [ '$RUNONCE' = '1' ]; then php ocular.phar code-coverage:upload --format=php-clover clover.xml; fi"
+  - cd ../
   # Run Javascript unit tests
-#  - cd tests/js
+#  - cd js/
 #  - sh -c "if [ '$JSTESTS' = '1' ]; then npm install --deps; node_modules/karma/bin/karma start karma.config.js --single-run; fi"
-#  - cd ../
+#  - cd ../../
 
+# TODO: add CODECHECK=1 to 3rd item of the matrix
 matrix:
   include:
     - php: 5.6
-      env: DB=mysql
+      env: DB=mysql;RUNONCE=1
     - php: 5.6
       env: DB=pgsql
-#    - php: 5.6
-#      env: DB=oracle
     - php: 5.6
-      env: DB=mysql;CODECHECK=1
+      env: DB=mysql
     - php: 5.6
       env: DB=mysql;CODECHECK=2
-#    - php: 5.6
-#      env: DB=mysql;JSTESTS=1
   allow_failures:
     - env: DB=mysql;CODECHECK=2
 fast_finish: true

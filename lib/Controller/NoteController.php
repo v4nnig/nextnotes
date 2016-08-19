@@ -42,7 +42,7 @@ class NoteController extends Controller {
      * @param $UserId
      */
     public function __construct($AppName, IRequest $request,
-                                NoteService $service, $UserId){
+                                NoteService $service, $UserId) {
         parent::__construct($AppName, $request);
         $this->service = $service;
         $this->userId = $UserId;
@@ -55,7 +55,9 @@ class NoteController extends Controller {
      * @return DataResponse
      */
     public function index() {
-        return new DataResponse($this->service->findAll($this->userId));
+        return $this->handleNotFound(function() {
+            return $this->service->findAll($this->userId);
+        });
     }
 
     /**
@@ -66,7 +68,7 @@ class NoteController extends Controller {
      * @return JSONResponse
      */
     public function show($id) {
-        return $this->handleNotFound(function () use ($id) {
+        return $this->handleNotFound(function() use ($id) {
             return $this->service->find($id, $this->userId);
         });
     }
@@ -80,7 +82,7 @@ class NoteController extends Controller {
      * @return JSONResponse
      */
     public function create($title, $content) {
-        return $this->handleNotFound(function () use ($title, $content){
+        return $this->handleNotFound(function() use ($title, $content){
             return $this->service->create($title, $content, $this->userId);
         });
     }
@@ -95,7 +97,7 @@ class NoteController extends Controller {
      * @return JSONResponse
      */
     public function update($id, $title, $content) {
-        return $this->handleNotFound(function () use ($id, $title, $content) {
+        return $this->handleNotFound(function() use ($id, $title, $content) {
             return $this->service->update($id, $title, $content, $this->userId);
         });
     }
@@ -108,7 +110,7 @@ class NoteController extends Controller {
      * @return JSONResponse
      */
     public function destroy($id) {
-        return $this->handleNotFound(function () use ($id) {
+        return $this->handleNotFound(function() use ($id) {
             return $this->service->delete($id, $this->userId);
         });
     }
@@ -123,8 +125,8 @@ class NoteController extends Controller {
      * @param string $query
      * @return JSONResponse
      */
-    public function search($query){
-        return $this->handleNotFound(function () use ($query) {
+    public function search($query) {
+        return $this->handleNotFound(function() use ($query) {
             return $this->service->search($query, $this->userId);
         });
     }

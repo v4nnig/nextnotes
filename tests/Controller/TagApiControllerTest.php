@@ -8,7 +8,9 @@
  * @author Janis Koehr <janiskoehr@icloud.com>
  * @copyright Janis Koehr 2016
  */
-namespace OCA\NextNotes\Controller;
+namespace OCA\NextNotes\Tests\Controller;
+
+use OCA\NextNotes\Controller\TagApiController;
 
 require_once __DIR__ . '/TagControllerTest.php';
 

@@ -57,14 +57,14 @@ class NoteMapper extends Mapper {
      * @param $userId
      * @return \OCP\AppFramework\Db\Entity as JSONSerializable
      */
-    public function fulltextSearchWithoutTagFilter($terms, $userId){
+    public function fulltextSearchWithoutTagFilter($terms, $userId) {
         $filter = '';
         end($terms);
         $last = key($terms);
-        foreach($terms as $key => $term){
-            if($key === $last){
+        foreach ($terms as $key => $term) {
+            if ($key === $last) {
                 $filter .= 'LOWER(n.content) LIKE LOWER(\'%'.$term.'%\')';
-            }else{
+            }else {
                 $filter .= 'LOWER(n.content) LIKE LOWER(\'%'.$term.'%\') AND ';
             }
         }
@@ -80,14 +80,14 @@ class NoteMapper extends Mapper {
      * @param $userId
      * @return \OCP\AppFramework\Db\Entity as JSONSerializable
      */
-    public function tagSearch($tags, $userId){
+    public function tagSearch($tags, $userId) {
         $filter = '';
         end($tags);
         $last = key($tags);
-        foreach($tags as $key => $tag) {
-            if ($key === $last){
+        foreach ($tags as $key => $tag) {
+            if ($key === $last) {
                 $filter .= 'LOWER(c.category) LIKE LOWER(\''.$tag.'\')';
-            }else{
+            }else {
                 $filter .= 'LOWER(c.category) LIKE LOWER(\''.$tag.'\') AND ';
             }
         }
@@ -105,17 +105,17 @@ class NoteMapper extends Mapper {
      * @param $userId
      * @return \OCP\AppFramework\Db\Entity as JSONSerializable
      */
-    public function fulltextSearchWithTagFilter($terms, $tags, $userId){
+    public function fulltextSearchWithTagFilter($terms, $tags, $userId) {
         $filter = '';
-        foreach($terms as $term){
+        foreach ($terms as $term) {
             $filter .= 'LOWER(n.content) LIKE LOWER(\'%'.$term.'%\') AND ';
         }
         end($tags);
         $last = key($tags);
-        foreach($tags as $key => $tag) {
-            if ($key === $last){
+        foreach ($tags as $key => $tag) {
+            if ($key === $last) {
                 $filter .= 'LOWER(c.category) LIKE LOWER(\''.$tag.'\')';
-            }else{
+            }else {
                 $filter .= 'LOWER(c.category) LIKE LOWER(\''.$tag.'\') AND ';
             }
         }
@@ -125,12 +125,12 @@ class NoteMapper extends Mapper {
         return $this->findEntities($sql, [$userId, 'nextnotes', 'nextnotes', $userId]);
     }
 
-	/**
+    /**
      * For Hook post_deleteUser: deletes all notes of a specific user.
      * @param $userId
      * @return \PDOStatement
      */
-    public function deleteAllForUser($userId){
+    public function deleteAllForUser($userId) {
         $sql = 'DELETE FROM *PREFIX*nextnotes_notes WHERE user_id = ?';
         return $this->execute($sql, [$userId]);
     }

@@ -19,6 +19,20 @@ If you recognize any bugs or if you want to propose new features or enhancements
 * A fork of **[SimpleMDE](https://github.com/NextStepWebs/simplemde-markdown-editor)** is used for the beautiful md editor surface.
 * A fork of **[Markdown CSS](https://github.com/sindresorhus/github-markdown-css)** is used for the styling.
 
+## ROADMAP
+Ideas for future improvements:
+
+### Version 1.0:
+* L10N
+
+### Version 2.0:
+* Separate title and content from each other. (Has effect on searchqueries and some other things like content view container and creation/update.)
+* Share option should share the tags also -> no user specific call for tags (maybe it is better to create a custom table with shared state and integrate in existing service)
+* Shared date could be a sorting criteria
+* Share option with edit and with view only option. Also there should be an open page with whole navigation and so on for shared "public" content. The shared "private" (link-only) notes should stay hided here
+* Duplicate a note (button for duplicate) -> when shared, make a local copy.
+
+
 ##Legal Information
 ###Disclaimer
 The software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.

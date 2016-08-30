@@ -149,6 +149,8 @@
 				select2Element.select2({
 					tags: tags,
 					// OPTIONS
+					separator: ',',
+					tokenSeparators: [',','#'],
 					containerCssClass: 'nextnotes-select2-container',
 					dropdownCssClass: 'nextnotes-select2-dropdown',
 					placeholder: t('nextnotes', 'Add tags here...'),
@@ -182,10 +184,12 @@
 					if (e.added !== undefined){
 						var create = {id: self._notes.getActive().id, title: e.added.text};
 						$.when(self._tags.createTag(create)).done(function(){
-							self.render();
+							self.renderNavigation();
+							self.renderTagManager();
+							self.adoptTheming();
 						}).fail(function(){
 							/** global: OC */
-							OC.Notification.showTemporary(t('nextnotes','Could not create tag.'), {
+							OC.Notification.showTemporary(t('nextnotes','Could not create tag. Maybe you used a character that is not allowed.'), {
 								timeout: 10,
 								isHTML: false
 							});

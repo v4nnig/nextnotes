@@ -22,12 +22,18 @@ class TagServiceTest extends TestCase {
 	private $tagM;
 	private $service;
 	private $logger;
+	private $userId;
+	private $noteMapper;
 
 	public function setUp() {
 		$this->logger = $this->getMockBuilder('OCP\ILogger')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->tagM = $this->getMockBuilder('\OCP\ITags')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->userId = 'john';
+		$this->noteMapper = $this->getMockBuilder('OCA\NextNotes\Db\NoteMapper')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->service = new TagService($this->tagM, $this->logger);
@@ -95,6 +101,9 @@ class TagServiceTest extends TestCase {
 	}
 
 	public function testCreateTag(){
+		$this->service->expects($this->once())
+			->method('findNote')
+			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
 			->with($this->equalTo(1),
@@ -115,11 +124,33 @@ class TagServiceTest extends TestCase {
 	 * @expectedException \OCA\NextNotes\Service\NotFoundException
 	 */
 	public function testCreateTagNotFoundTwo(){
+		$this->service->expects($this->once())
+			->method('findNote')
+			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
 			->with($this->equalTo(1),
 				$this->equalTo('title'))
 			->will($this->returnValue(false));
+		$this->service->createTag(1,'title');
+	}
+
+	/**
+	 * @expectedException \OCA\NextNotes\Service\NotFoundException
+	 */
+	public function testCreateTagNotFoundThree(){
+		//WrongCall (Wrong Character)
+		$this->service->createTag(1,'title,');
+	}
+
+	/**
+	 * @expectedException \OCA\NextNotes\Service\NotFoundException
+	 */
+	public function testCreateTagNotFoundFour(){
+		$this->service->expects($this->once())
+			->method('findNote')
+			->will($this->throwException(new DoesNotExistException('')));
+		//WrongCall (Wrong Character)
 		$this->service->createTag(1,'title');
 	}
 

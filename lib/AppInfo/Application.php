@@ -11,7 +11,9 @@
 
 namespace OCA\NextNotes\AppInfo;
 
+use OCA\NextNotes\Controller\NoteApiController;
 use OCA\NextNotes\Controller\NoteController;
+use OCA\NextNotes\Controller\TagApiController;
 use OCA\NextNotes\Controller\TagController;
 use OCA\NextNotes\Db\NoteMapper;
 use OCA\NextNotes\Service\NoteService;
@@ -59,6 +61,8 @@ class Application extends App {
             $server = $c->query('ServerContainer');
             return new TagService(
                 $c->query('Tagger'),
+				$c->query('NoteMapper'),
+				$c->query('CurrentUID'),
                 $server->getLogger()
             );
         });
@@ -97,6 +101,17 @@ class Application extends App {
             );
         });
 
+		$container->registerService('NoteApiController', function(IAppContainer $c) {
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new NoteApiController(
+				$c->getAppName(),
+				$server->getRequest(),
+				$c->query('NoteService'),
+				$c->query('CurrentUID')
+			);
+		});
+
         $container->registerService('TagController', function(IAppContainer $c) {
             /** @var \OC\Server $server */
             $server = $c->query('ServerContainer');
@@ -107,6 +122,17 @@ class Application extends App {
                 $c->query('CurrentUID')
             );
         });
+
+		$container->registerService('TagApiController', function(IAppContainer $c) {
+			/** @var \OC\Server $server */
+			$server = $c->query('ServerContainer');
+			return new TagApiController(
+				$c->getAppName(),
+				$server->getRequest(),
+				$c->query('TagService'),
+				$c->query('CurrentUID')
+			);
+		});
     }
 
     /**

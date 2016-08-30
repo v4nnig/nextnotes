@@ -101,8 +101,8 @@ class TagServiceTest extends TestCase {
 	}
 
 	public function testCreateTag(){
-		$this->service->expects($this->once())
-			->method('findNote')
+		$this->noteMapper->expects($this->once())
+			->method('find')
 			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
@@ -124,8 +124,8 @@ class TagServiceTest extends TestCase {
 	 * @expectedException \OCA\NextNotes\Service\NotFoundException
 	 */
 	public function testCreateTagNotFoundTwo(){
-		$this->service->expects($this->once())
-			->method('findNote')
+		$this->noteMapper->expects($this->once())
+			->method('find')
 			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
@@ -147,8 +147,8 @@ class TagServiceTest extends TestCase {
 	 * @expectedException \OCA\NextNotes\Service\NotFoundException
 	 */
 	public function testCreateTagNotFoundFour(){
-		$this->service->expects($this->once())
-			->method('findNote')
+		$this->noteMapper->expects($this->once())
+			->method('find')
 			->will($this->throwException(new DoesNotExistException('')));
 		//WrongCall (Wrong Character)
 		$this->service->createTag(1,'title');

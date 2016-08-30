@@ -11,6 +11,7 @@
 
 namespace OCA\NextNotes\Controller;
 
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Controller;
@@ -39,7 +40,13 @@ class PageController extends Controller {
      * @return TemplateResponse
      */
     public function index() {
-        return new TemplateResponse('nextnotes', 'main');
+        $response = new TemplateResponse('nextnotes', 'main');
+		$policy = new ContentSecurityPolicy();
+		$policy->addAllowedChildSrcDomain('\'self\'');
+		$policy->addAllowedFontDomain('data:');
+		$policy->addAllowedImageDomain('*');
+		$response->setContentSecurityPolicy($policy);
+		return $response;
     }
 
 

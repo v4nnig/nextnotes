@@ -11,6 +11,7 @@
 namespace OCA\NextNotes\Service;
 
 use Exception;
+use OCA\NextNotes\Db\NoteMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http\DataResponse;
@@ -26,12 +27,22 @@ use OCP\ITags;
 class TagService {
 
     /**
-     * @var \OCP\ITags
+     * @var \OCP\ITags $tagM
      */
     private $tagM;
 
 	/**
-     * @var ILogger
+	 * @var NoteMapper $noteMapper
+	 */
+	private $noteMapper;
+
+	/**
+	 * @var string $userId
+	 */
+	private $userId;
+
+	/**
+     * @var ILogger $logger
      */
     private $logger;
 
@@ -40,16 +51,18 @@ class TagService {
      * @param ITags $tagManager
      * @param ILogger $logger
      */
-    public function __construct(ITags $tagManager, ILogger $logger) {
+    public function __construct(ITags $tagManager, NoteMapper $noteMapper, $UserID, ILogger $logger) {
         $this->tagM = $tagManager;
         $this->logger = $logger;
+		$this->noteMapper = $noteMapper;
+		$this->userId = $UserID;
     }
 
-    /**
-     * Handle the possible thrown Exceptions from all methods of this class.
-     * @param Exception $e
-     * @throws NotFoundException
-     */
+	/**
+	 * Handle the possible thrown Exceptions from all methods of this class.
+	 * @param Exception $e
+	 * @throws Exception | NotFoundException
+	 */
     private function handleException($e) {
         $this->logger->logException($e, ['app' => 'nextnotes', 'message' => 'Exception during tag service function processing']);
         if ($e instanceof DoesNotExistException ||
@@ -120,7 +133,10 @@ class TagService {
      */
     public function createTag($noteId, $title) {
         try {
-            if (!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined') {throw new WrongCallException('WRONG ARGUMENTS'); }
+            if (!isset($noteId) OR !isset($title) OR $title === 'undefined' OR $noteId === 'undefined' OR strpos($title, ',') !== false OR strpos($title, '#') !== false) {
+            	throw new WrongCallException('WRONG ARGUMENTS');
+            }
+			$this->findNote($noteId, $this->userId);
             if ($this->tagM->tagAs($noteId, $title)) {
                 $this->logger->debug('Tag created: '.$title, ['app' => 'nextnotes']);
                 return new DataResponse(array());
@@ -195,5 +211,19 @@ class TagService {
             $this->handleException($e);
         }
     }
+
+	/**
+	 * Tries to find the note for the given id and user. Throws a Custom Exception, if nothing found.
+	 * @param $id
+	 * @param $userId
+	 * @throws DoesNotExistException
+	 */
+	private function findNote($id, $userId){
+    	try {
+			$this->noteMapper->find($id, $userId);
+		}catch (Exception $e){
+			throw new DoesNotExistException('No note found for the given id.');
+		}
+	}
     
 }

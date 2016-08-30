@@ -22,6 +22,8 @@ class TagServiceTest extends TestCase {
 	private $tagM;
 	private $service;
 	private $logger;
+	private $userId;
+	private $noteMapper;
 
 	public function setUp() {
 		$this->logger = $this->getMockBuilder('OCP\ILogger')
@@ -30,7 +32,11 @@ class TagServiceTest extends TestCase {
 		$this->tagM = $this->getMockBuilder('\OCP\ITags')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->service = new TagService($this->tagM, $this->logger);
+		$this->userId = 'john';
+		$this->noteMapper = $this->getMockBuilder('OCA\NextNotes\Db\NoteMapper')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->service = new TagService($this->tagM, $this->noteMapper, $this->userId, $this->logger);
 	}
 
 	public function testFindAll(){
@@ -95,6 +101,9 @@ class TagServiceTest extends TestCase {
 	}
 
 	public function testCreateTag(){
+		$this->noteMapper->expects($this->once())
+			->method('find')
+			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
 			->with($this->equalTo(1),
@@ -115,11 +124,33 @@ class TagServiceTest extends TestCase {
 	 * @expectedException \OCA\NextNotes\Service\NotFoundException
 	 */
 	public function testCreateTagNotFoundTwo(){
+		$this->noteMapper->expects($this->once())
+			->method('find')
+			->will($this->returnValue(true));
 		$this->tagM->expects($this->once())
 			->method('tagAs')
 			->with($this->equalTo(1),
 				$this->equalTo('title'))
 			->will($this->returnValue(false));
+		$this->service->createTag(1,'title');
+	}
+
+	/**
+	 * @expectedException \OCA\NextNotes\Service\NotFoundException
+	 */
+	public function testCreateTagNotFoundThree(){
+		//WrongCall (Wrong Character)
+		$this->service->createTag(1,'title,');
+	}
+
+	/**
+	 * @expectedException \OCA\NextNotes\Service\NotFoundException
+	 */
+	public function testCreateTagNotFoundFour(){
+		$this->noteMapper->expects($this->once())
+			->method('find')
+			->will($this->throwException(new DoesNotExistException('')));
+		//WrongCall (Wrong Character)
 		$this->service->createTag(1,'title');
 	}
 

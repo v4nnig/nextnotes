@@ -36,7 +36,7 @@ class TagServiceTest extends TestCase {
 		$this->noteMapper = $this->getMockBuilder('OCA\NextNotes\Db\NoteMapper')
 			->disableOriginalConstructor()
 			->getMock();
-		$this->service = new TagService($this->tagM, $this->logger);
+		$this->service = new TagService($this->tagM, $this->noteMapper, $this->userId, $this->logger);
 	}
 
 	public function testFindAll(){

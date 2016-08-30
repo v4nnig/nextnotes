@@ -34,6 +34,7 @@ class PageControllerTest extends TestCase {
 
 		$this->assertEquals('main', $result->getTemplateName());
 		$this->assertTrue($result instanceof TemplateResponse);
+		$this->assertNotNull($result->getContentSecurityPolicy());
 	}
 
 

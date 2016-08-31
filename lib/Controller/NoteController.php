@@ -10,7 +10,7 @@
  */
 namespace OCA\NextNotes\Controller;
 
-use OCP\AppFramework\Http\JSONResponse;
+
 use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Controller;
@@ -65,7 +65,7 @@ class NoteController extends Controller {
      * @NoAdminRequired
      *
      * @param int $id
-     * @return JSONResponse
+     * @return DataResponse
      */
     public function show($id) {
         return $this->handleNotFound(function() use ($id) {
@@ -79,7 +79,7 @@ class NoteController extends Controller {
      *
      * @param string $title
      * @param string $content
-     * @return JSONResponse
+     * @return DataResponse
      */
     public function create($title, $content) {
         return $this->handleNotFound(function() use ($title, $content){
@@ -94,7 +94,7 @@ class NoteController extends Controller {
      * @param int $id
      * @param string $title
      * @param string $content
-     * @return JSONResponse
+     * @return DataResponse
      */
     public function update($id, $title, $content) {
         return $this->handleNotFound(function() use ($id, $title, $content) {
@@ -107,7 +107,7 @@ class NoteController extends Controller {
      * @NoAdminRequired
      *
      * @param int $id
-     * @return JSONResponse
+     * @return DataResponse
      */
     public function destroy($id) {
         return $this->handleNotFound(function() use ($id) {
@@ -123,7 +123,7 @@ class NoteController extends Controller {
      * @NoAdminRequired
      *
      * @param string $query
-     * @return JSONResponse
+     * @return DataResponse
      */
     public function search($query) {
         return $this->handleNotFound(function() use ($query) {

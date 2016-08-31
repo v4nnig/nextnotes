@@ -214,7 +214,7 @@
 					{
 						name: "guide",
 						action: function(){
-							window.open('https://simplemde.com/markdown-guide', '_blank');
+							window.open('https://janis91.github.io/nextnotes/markdown-guide.html', '_blank');
 						},
 						className: "fa fa-question-circle",
 						title: t("nextnotes", "Markdown Guide")

@@ -9,7 +9,6 @@
 .nextnotes-navigation-tags:empty {
 	display: none;
 }
-
 .nextnotes-navigation-tag {
 	margin-top: -15px;
 	display: inline-block;
@@ -126,6 +125,9 @@
 }
 #nextnotes-editor form {
 	height: 100%;
+}
+.nextnotes-save-button {
+	background-color: rgb(255, 135, 0);
 }
 /***********/
 /***********/

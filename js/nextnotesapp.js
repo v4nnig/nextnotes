@@ -86,7 +86,7 @@
 						title: t("nextnotes", "New")
 					},
 					{//create or update a note
-						name: "safe",
+						name: "save",
 						action: function () {
 							var content = self._simplemde.value();
 							var title = content.split('\n')[0]; // first line is the title
@@ -117,8 +117,9 @@
 								});
 							}
 						},
-						className: "fa fa-save no-disable",
-						title: t("nextnotes", "Safe")
+						//FIXME: remove the class and handle autosave or at least a eventlistener for leaving the app without saving.
+						className: "fa fa-save no-disable nextnotes-save-button",
+						title: t("nextnotes", "Save")
 					},
 					// following options create the buttons for the editor toolbar
 					{

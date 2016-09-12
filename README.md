@@ -1,4 +1,4 @@
-# Next Notes (v1.0.0)
+# Next Notes (v0.9.0-beta)
 [![Build Status](https://travis-ci.org/janis91/nextnotes.svg?branch=master)](https://travis-ci.org/janis91/nextnotes) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/janis91/nextnotes/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/janis91/nextnotes/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/janis91/nextnotes/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/janis91/nextnotes/?branch=master) [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
 **DO NOT USE IT UNTIL THE APPSTORE OF NEXTCLOUD IS OUT OF BETA STATE AND THE BUILD HAS PROCESSED SUCCESSFULLY**.

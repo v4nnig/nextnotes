@@ -7,7 +7,7 @@
     <summary lang="de">Erweiterte Notizen-Organisation.</summary>
     <description lang="en"># Description\nAn app for enhanced organization of notes. The Next Notes app gives you much more possibilities for your personal organization. With Next Notes you will be able to create notes with a simple markup for enhanced usability, search for your notes by tags or in fulltext. And a future version will give you the opportunity to share your notes with others or let them even edit them completely without the constraint of being logged in.</description>
     <description lang="de"># Beschreibung\nEine App zur erweiterten Organisation von Notizen und Texten. Mit Next Notes hast du die Möglichkeit mithilfe eines simplen Editors (Markup-Sprache) Notizen und Texte zu erstellen, die schöner sind als einfache Zettel. Außerdem ist es möglich mit der integrierten Suche nach Notizen bzw. Tags zu suchen, die vorher angelegt wurden. Eine zukünftige Version der App wird zudem die Möglichkeit zum Teilen von Notizen mit Usern und Gruppen sowie öffentlich beinhalten.</description>
-    <version>1.0.0</version>
+    <version>0.9.0</version>
     <licence>agpl</licence>
     <author>Janis Koehr</author>
     <namespace>NextNotes</namespace>

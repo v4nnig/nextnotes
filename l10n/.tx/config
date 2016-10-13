@@ -3,7 +3,7 @@ host = https://www.transifex.com
 lang_map = ja_JP: ja
 
 [nextcloud.janis91-nextnotes]
-file_filter = <lang>/janis91-nextnotes.po
-source_file = templates/janis91-nextnotes.pot
+file_filter = <lang>/nextnotes.po
+source_file = templates/nextnotes.pot
 source_lang = en
 type = PO

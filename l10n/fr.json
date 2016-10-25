@@ -24,6 +24,7 @@
     "Add tags here..." : "Ajouter les tags ici...",
     "No matches." : "Aucun résultats.",
     "Searching..." : "Recherche...",
+    "Could not untag." : "Impossible d'enlever l'étiquette.",
     "Could not create tag. Maybe you used a character that is not allowed." : "Impossible de créer tag. Peut-être que vous avez utilisé un caractère non autorisé.",
     "Are you really sure you want to delete the tag \"{tag}\"?" : "Voulez-vous vraiment supprimer le tag \"{tag}\"?",
     "Delete tag" : "Supprimer tag",

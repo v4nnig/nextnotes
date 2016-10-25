@@ -27,6 +27,7 @@ OC.L10N.register(
     "No matches." : "Sin coincidencias",
     "Searching..." : "Buscando...",
     "Could not untag." : "No se puede des-etiquetar.",
+    "Could not create tag. Maybe you used a character that is not allowed." : "No se puede crear la etiqueta. Quizá este usando algún carácter no permitido.",
     "Could not search for notes." : "No se puede buscar por notas.",
     "Are you really sure you want to delete the tag \"{tag}\"?" : "¿Estas seguro de que realmente quieres eliminar la etiqueta \"{tag}\"?",
     "Delete tag" : "Borrar etiqueta",

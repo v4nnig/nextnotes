@@ -12,6 +12,7 @@ OC.L10N.register(
     "Redo" : "Rehacer",
     "Bold" : "Negrita",
     "Italic" : "Cursiva",
+    "Strikethrough" : "Tachado",
     "Heading" : "Título",
     "Code" : "Código",
     "Quote" : "Cita",

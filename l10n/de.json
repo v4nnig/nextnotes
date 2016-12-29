@@ -28,7 +28,7 @@
     "Could not untag." : "Tag konnte nicht entfernt werden.",
     "Could not create tag. Maybe you used a character that is not allowed." : "Tag konnte nicht erstellt werden. Vielleicht wurde ein verbotenes Zeichen verwendet.",
     "Could not search for notes." : "Nach Notizen konnte nicht gesucht werden.",
-    "Are you really sure you want to delete the tag \"{tag}\"?" : "Möchten Sie den Tag \"{tag}\" wirklich entfernen?",
+    "Are you really sure you want to delete the tag \"{tag}\"?" : "Möchtest Du  den Tag \"{tag}\" wirklich entfernen?",
     "Delete tag" : "Tag löschen",
     "Next Notes" : "Next Notes",
     "No notes found..." : "Keine Notizen gefunden...",

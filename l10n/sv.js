@@ -36,6 +36,6 @@ OC.L10N.register(
     "No notes found..." : "Inga anteckningar hittades...",
     "Search" : "Sök",
     "Choose tag" : "Välj tagg",
-    "Delete Tags" : "Ta bort taggar"
+    "Delete Tags" : "Radera taggar"
 },
 "nplurals=2; plural=(n != 1);");

@@ -24,6 +24,7 @@ OC.L10N.register(
     "Add tags here..." : "Vendos etiketa këtu...",
     "No matches." : "Nuk ka përputhje.",
     "Searching..." : "Duke kërkuar...",
+    "Could not untag." : "Nuk mund të hiqet etiketa.",
     "Could not create tag. Maybe you used a character that is not allowed." : "Nuk mund të krijohej etiketa. Ndoshta keni përdorur një karakter të palejuar.",
     "Could not search for notes." : "Nuk mund të kërkohej për shënime.",
     "Are you really sure you want to delete the tag \"{tag}\"?" : "A jeni të sigurt që doni të fshini etiketën \"{tag}\"?",

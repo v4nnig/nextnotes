@@ -30,7 +30,7 @@ OC.L10N.register(
     "Could not untag." : "Impossible d'enlever l'étiquette.",
     "Could not create tag. Maybe you used a character that is not allowed." : "Impossible de créer tag. Peut-être que vous avez utilisé un caractère non autorisé.",
     "Could not search for notes." : "Impossible de rechercher les notes",
-    "Are you really sure you want to delete the tag \"{tag}\"?" : "Voulez-vous vraiment supprimer le tag \"{tag}\"?",
+    "Are you really sure you want to delete the tag \"{tag}\"?" : "Voulez-vous vraiment supprimer l'étiquette \"{tag}\" ?",
     "Delete tag" : "Supprimer tag",
     "Next Notes" : "Note suivante",
     "No notes found..." : "Aucunes notes trouvées...",

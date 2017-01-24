@@ -33,7 +33,7 @@ OC.L10N.register(
     "Are you really sure you want to delete the tag \"{tag}\"?" : "Voulez-vous vraiment supprimer l'étiquette \"{tag}\" ?",
     "Delete tag" : "Supprimer tag",
     "Next Notes" : "Note suivante",
-    "No notes found..." : "Aucunes notes trouvées...",
+    "No notes found..." : "Aucune note trouvée…",
     "Search" : "Rechercher",
     "Choose tag" : "Choisir tag",
     "Delete Tags" : "Supprimer tags"

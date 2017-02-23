@@ -22,11 +22,15 @@ OC.L10N.register(
     "Insert Table" : "Ievietot tabulu",
     "Toggle Preview" : "Pārslēgt priekšskatījums",
     "Could not delete note. Note not found." : "Nevarēja izdzēst piezīmi. Piezīme nav atrasta.",
+    "Add tags here..." : ".. šeit pievienot atzīmes",
     "No matches." : "Atbilstību nav.",
     "Searching..." : "Meklē...",
     "Could not search for notes." : "Nevar meklēt piezīmes.",
+    "Delete tag" : "Dzēst atzīmi",
     "Next Notes" : "Nākamās piezīmes",
     "No notes found..." : "Nav atrastas piezīmes...",
-    "Search" : "Meklēt"
+    "Search" : "Meklēt",
+    "Choose tag" : "Izvēlēties atzīmi",
+    "Delete Tags" : "Dzēst atzīmes"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : 2);");

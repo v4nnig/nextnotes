@@ -24,7 +24,7 @@ OC.L10N.register(
     "Toggle Preview" : "Vorschau umschalten",
     "Markdown Guide" : "Markdown Anleitung",
     "Could not delete note. Note not found." : "Notiz konnte nicht gelöscht werden. Notiz nicht gefunden.",
-    "Add tags here..." : "Füge hier Tags hinzu...",
+    "Add tags here..." : "Tags hier hinzufügen...",
     "No matches." : "Keine Treffer.",
     "Searching..." : "Suche...",
     "Could not untag." : "Tag konnte nicht entfernt werden.",

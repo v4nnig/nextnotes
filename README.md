@@ -19,12 +19,12 @@ If you recognize any bugs or if you want to propose new features or enhancements
 * A fork of **[SimpleMDE](https://github.com/NextStepWebs/simplemde-markdown-editor)** is used for the beautiful md editor surface.
 * A fork of **[Markdown CSS](https://github.com/sindresorhus/github-markdown-css)** is used for the styling.
 
-##Legal Information
-###Disclaimer
+## Legal Information
+### Disclaimer
 The software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
-###Author
+### Author
 Janis Koehr
 
-###License
+### License
 [GNU AFFERO GENERAL PUBLIC LICENSE](https://github.com/janis91/nextnotes/blob/master/COPYING)
